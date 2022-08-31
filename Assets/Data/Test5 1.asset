@@ -1,0 +1,330 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8328975223903867604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 9e96997559fc04043b56aebcd7cfbd1e
+  position: {x: 40, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@balance_turn_L
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &-7080900174950946201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f7ff87ed314bb9b60fce312abf0f92, type: 3}
+  m_Name: ParallelNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: ff97902f084e6f04da13a2cdae2cae11
+  position: {x: 115, y: -191}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  children:
+  - {fileID: -1913520123054897091}
+  - {fileID: -4171275427502155015}
+  - {fileID: 6720177548150355138}
+  - {fileID: -8328975223903867604}
+  - {fileID: -1723782261128418282}
+  - {fileID: 8560386680518662793}
+  - {fileID: -4030102891922181416}
+  - {fileID: 8276257334532635283}
+  - {fileID: -3784782946869451673}
+  - {fileID: -5931173433799257320}
+--- !u!114 &-6385033546965331546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bce03bc788a6944bef09e4fc28b00b, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 387139a8bcdbcf74492d92ca143b3f87
+  position: {x: 115, y: -340.12}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  child: {fileID: -7080900174950946201}
+--- !u!114 &-5931173433799257320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 4fd0ad779e2e0a04a8cb49679159a8a8
+  position: {x: 1061.3225, y: 41.000015}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@climb_3
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &-4171275427502155015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 1022e67971b9e3e4fa08687620f62b22
+  position: {x: -297, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@balance_idle
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &-4030102891922181416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 8625720689ecbe347a75396242190dd8
+  position: {x: 540.55994, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@cliff_jump
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &-3784782946869451673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: bfdb4258cdfa9af4a93d62e3dd00ab53
+  position: {x: 883.1915, y: 41.00002}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@climb_2
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &-1913520123054897091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89265f6b366e4832b4ba2fff243e0137, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 71a8a764bb3db3646a42930a3bbe2dc7
+  position: {x: -476.08002, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 0.5
+--- !u!114 &-1723782261128418282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: bed17da802aa3b0418737da37543ff9a
+  position: {x: 205.55994, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@balance_turn_R
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5a1648c7f8441b8cb7bb6739c8abf5, type: 3}
+  m_Name: Test5 1
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -6385033546965331546}
+  treeState: 0
+  nodes:
+  - {fileID: -6385033546965331546}
+  - {fileID: -1913520123054897091}
+  - {fileID: -4171275427502155015}
+  - {fileID: 6720177548150355138}
+  - {fileID: -8328975223903867604}
+  - {fileID: -3784782946869451673}
+  - {fileID: 8276257334532635283}
+  - {fileID: -1723782261128418282}
+  - {fileID: -4030102891922181416}
+  - {fileID: 8560386680518662793}
+  - {fileID: -5931173433799257320}
+  - {fileID: -7080900174950946201}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+--- !u!114 &6720177548150355138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 5caf35401aaf68442a03c10e1af62f15
+  position: {x: -110, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@balance_jogging
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &8276257334532635283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 8696cacd0d48d4c4c9bf03f394b4dd38
+  position: {x: 700.55994, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@climb_1
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0
+--- !u!114 &8560386680518662793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
+  m_Name: PlayableLoadNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 437b69504d6b84842a3b14d24d728318
+  position: {x: 378.55994, y: 41}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  duration: 1
+  clipName: Ninja@balance_walk
+  clip: {fileID: 0}
+  animator: {fileID: 0}
+  exitOnEnd: 0

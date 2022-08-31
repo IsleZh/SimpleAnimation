@@ -1,39 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-
+namespace Isle.BehaviourTree
+{
     public class BehaviourTreeRunner : MonoBehaviour
     {
-        private global::BehaviourTree tree;
+        public BehaviourTree tree;
 
         // Start is called before the first frame update
         void Start()
         {
-            tree = ScriptableObject.CreateInstance<BehaviourTree>();
-            var log1 = ScriptableObject.CreateInstance<DebugLogNode>();
-            log1.message = "HELLOOO YOUTUBEEE!!! 111 ";
-
-            var pause1 = ScriptableObject.CreateInstance<WaitNode>();
-            
-            var log2 = ScriptableObject.CreateInstance<DebugLogNode>();
-            log2.message = "HELLOOO YOUTUBEEE!!! 222 ";
-            var pause2 = ScriptableObject.CreateInstance<WaitNode>();
-
-            var log3 = ScriptableObject.CreateInstance<DebugLogNode>();
-            log3.message = "HELLOOO YOUTUBEEE!!! 333 ";
-            var pause3 = ScriptableObject.CreateInstance<WaitNode>();
-
-            var sequence = ScriptableObject.CreateInstance<SequencerNode>();
-            sequence.children.Add(log1);
-            sequence.children.Add(pause1);
-            sequence.children.Add(log2);
-            sequence.children.Add(pause2);
-            sequence.children.Add(log3);
-            sequence.children.Add(pause3);
-            
-            var loop = ScriptableObject.CreateInstance<RepeatNode>();
-            loop.child = sequence;
-
-            tree.rootNode = loop;
+            tree = tree.Clone();
+            //tree.Bind(GetComponent<AiAgent>());#TODO 绑定资源可能是用这种方法
+            tree.Bind();
         }
 
         // Update is called once per frame
@@ -42,3 +22,4 @@ using UnityEngine;
             tree.Update();
         }
     }
+}

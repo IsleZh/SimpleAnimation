@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7666932974539537057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d33f7536f74d97902b1fe1421d6455, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: febf8bd1070cdb14caa3821f1a20ce90
+  position: {x: 218, y: -50.5}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  nodeInfo: "\u65E0\u8282\u70B9\u63CF\u8FF0"
+  children:
+  - {fileID: -969816438617896276}
+  - {fileID: 7065241737006194446}
+  nodeInfo: "\u987A\u5E8F\u7ED3\u70B9\uFF1A\u6309\u987A\u5E8F\u6267\u884C\u5B69\u5B50\u7ED3\u70B9\u76F4\u5230\u5176\u4E2D\u4E00\u4E2A\u5B69\u5B50\u7ED3\u70B9\u8FD4\u56DE\u5931\u8D25\u72B6\u6001\u6216\u6240\u6709\u5B69\u5B50\u7ED3\u70B9\u8FD4\u56DE\u6210\u529F\u72B6\u6001\u3002"
+--- !u!114 &-7171967702488020106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bce03bc788a6944bef09e4fc28b00b, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 10e5017e095a38f4dbd37c737e5cd321
+  position: {x: -225.48001, y: 39}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  nodeInfo: "\u65E0\u8282\u70B9\u63CF\u8FF0"
+  child: {fileID: 9123260209439264274}
+--- !u!114 &-969816438617896276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89265f6b366e4832b4ba2fff243e0137, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 1914da778c950c94cb20f5d631f47a8c
+  position: {x: 437, y: -127}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  nodeInfo: "\u65E0\u8282\u70B9\u63CF\u8FF0"
+  duration: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5a1648c7f8441b8cb7bb6739c8abf5, type: 3}
+  m_Name: New Behaviour Tree
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -7171967702488020106}
+  treeState: 0
+  nodes:
+  - {fileID: -7171967702488020106}
+  - {fileID: 7065241737006194446}
+  - {fileID: -969816438617896276}
+  - {fileID: 9123260209439264274}
+  - {fileID: -7666932974539537057}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+--- !u!114 &7065241737006194446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc6c23a8c9ac4b87acd1633a86afeacd, type: 3}
+  m_Name: DebugLogNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 0b38733d6af0b4d449f4d73cc9aab54e
+  position: {x: 437, y: 77.5}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  nodeInfo: "\u65E0\u8282\u70B9\u63CF\u8FF0"
+  message: 3123213
+--- !u!114 &9123260209439264274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6546abb7aa1f53a42bb387e83ac72d74, type: 3}
+  m_Name: RepeatNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 1fa744816b9d4414293b0780a61ad79c
+  position: {x: -25, y: -12}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  nodeInfo: "\u65E0\u8282\u70B9\u63CF\u8FF0"
+  child: {fileID: -7666932974539537057}

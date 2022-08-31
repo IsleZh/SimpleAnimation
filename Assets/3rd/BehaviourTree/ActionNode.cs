@@ -1,7 +1,11 @@
-﻿
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Isle.BehaviourTree
+{
     public abstract class ActionNode : Node
     {
-        protected abstract override void Onstart();
-        protected abstract override void OnStop();
-        protected abstract override State OnUpdate();
+
     }
+}
