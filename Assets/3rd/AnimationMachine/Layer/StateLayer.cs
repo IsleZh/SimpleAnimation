@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using FUnit;
+using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
 
+#endif
 namespace Isle.AnimationMachine
 {
+    [Serializable][CreateAssetMenu(fileName = "StateLayer", menuName = "PlayableAnimation/StateLayer")]
     public class StateLayer : ScriptableObject
     {
+        [HideInInspector]public string guid;
+        
         private string m_Name;
-        private StateMachine m_StateMachine;
+        [SerializeField]private StateMachine m_StateMachine;
         private AvatarMask m_AvatarMask;
         private LayerBlendingMode m_BlendingMode;
         private int m_SyncedLayerIndex = -1;
@@ -69,6 +77,7 @@ namespace Isle.AnimationMachine
 
         /// <summary>
         ///   <para>The default blending weight that the layers has. It is not taken into account for the first layer.</para>
+        /// 图层具有的默认混合权重。第一层不考虑
         /// </summary>
         public float defaultWeight
         {
@@ -84,5 +93,37 @@ namespace Isle.AnimationMachine
             get => this.m_SyncedLayerAffectsTiming;
             set => this.m_SyncedLayerAffectsTiming = value;
         }
+
+        public void Update()
+        {
+            if (m_StateMachine!=null)
+            {
+                Debug.Log("m_StateMachine != null");
+                m_StateMachine.Update();
+            }
+        }
+#if UNITY_EDITOR
+        [ContextMenu("CreateMatchine")]
+        public StateMachine CreateMatchine()
+        {
+            StateMachine stateMachine = ScriptableObject.CreateInstance(typeof(StateMachine)) as StateMachine;
+            stateMachine.name = "StateMachine";
+            stateMachine.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "CreateStateMachine");
+            this.stateMachine = stateMachine;
+
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(stateMachine, this);
+            }
+
+            Undo.RegisterCreatedObjectUndo(stateMachine, "CreateStateMachine");
+
+            AssetDatabase.SaveAssets();
+            return stateMachine;
+        }
+
+#endif
     }
 }

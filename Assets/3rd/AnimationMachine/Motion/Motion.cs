@@ -23,8 +23,9 @@ namespace Isle.AnimationMachine
         /// 根据情况传回对应Playable
         /// </summary>
         /// <returns></returns>
-        public Playable GetPlayable(PlayableGraph graph)
+        public virtual Playable GetPlayable(PlayableGraph graph)
         {
+            Debug.Log("Motion type is (Motion)");
             return playable;
         }
     }

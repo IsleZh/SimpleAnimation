@@ -42,7 +42,11 @@ namespace Isle.AnimationMachine
             //较小的exitTime在前是为了方便判断
             transitions.Sort((x1, x2) => x1.exitTime < x2.exitTime ? 1 : -1);
         }
-        
+
+        public void DoUpdate(float deltaTime)
+        {
+            OnUpdate(deltaTime);
+        }
         public void OnEnter()
         {
             
@@ -50,6 +54,10 @@ namespace Isle.AnimationMachine
 
         public bool OnUpdate(float deltaTime)
         {
+            if (transitions==null)
+            {
+                return false;
+            }
             foreach (var transition in transitions)
             {
                 if (transition.TryTransition())
@@ -91,57 +99,57 @@ namespace Isle.AnimationMachine
         /// <summary>
         ///   <para>Should Foot IK be respected for this state.</para>
         /// </summary>
-        public extern bool iKOnFeet { get; set; }
+        public bool iKOnFeet { get; set; }
 
         /// <summary>
         ///   <para>Whether or not the States writes back the default values for properties that are not animated by its Motion.</para>
         /// </summary>
-        public extern bool writeDefaultValues { get; set; }
+        public bool writeDefaultValues { get; set; }
 
         /// <summary>
         ///   <para>A tag can be used to identify a state.</para>
         /// </summary>
-        public extern string tag { get; set; }
+        public string tag { get; set; }
 
         /// <summary>
         ///   <para>The animator controller parameter that drives the speed value.</para>
         /// </summary>
-        public extern string speedParameter { get; set; }
+        public string speedParameter { get; set; }
 
         /// <summary>
         ///   <para>The animator controller parameter that drives the cycle offset value.</para>
         /// </summary>
-        public extern string cycleOffsetParameter { get; set; }
+        public string cycleOffsetParameter { get; set; }
 
         /// <summary>
         ///   <para>The animator controller parameter that drives the mirror value.</para>
         /// </summary>
-        public extern string mirrorParameter { get; set; }
+        public string mirrorParameter { get; set; }
 
         /// <summary>
         ///   <para>If timeParameterActive is true, the value of this Parameter will be used instead of normalized time.</para>
         /// </summary>
-        public extern string timeParameter { get; set; }
+        public string timeParameter { get; set; }
 
         /// <summary>
         ///   <para>Define if the speed value is driven by an Animator controller parameter or by the value set in the editor.</para>
         /// </summary>
-        public extern bool speedParameterActive { get; set; }
+        public bool speedParameterActive { get; set; }
 
         /// <summary>
         ///   <para>Define if the cycle offset value is driven by an Animator controller parameter or by the value set in the editor.</para>
         /// </summary>
-        public extern bool cycleOffsetParameterActive { get; set; }
+        public bool cycleOffsetParameterActive { get; set; }
 
         /// <summary>
         ///   <para>Define if the mirror value is driven by an Animator controller parameter or by the value set in the editor.</para>
         /// </summary>
-        public extern bool mirrorParameterActive { get; set; }
+        public bool mirrorParameterActive { get; set; }
 
         /// <summary>
         ///   <para>If true, use value of given Parameter as normalized time.</para>
         /// </summary>
-        public extern bool timeParameterActive { get; set; }
+        public bool timeParameterActive { get; set; }
 
         #endregion
 

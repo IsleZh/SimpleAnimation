@@ -105,7 +105,7 @@ namespace MyPlayable
 
         {
 
-            playableGraph = PlayableGraph.Create();
+            playableGraph = PlayableGraph.Create("Animation");
 
             var playQueuePlayable = ScriptPlayable<PlayQueuePlayable>.Create(playableGraph);
 
