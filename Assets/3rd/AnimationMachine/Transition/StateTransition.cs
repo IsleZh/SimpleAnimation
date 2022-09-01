@@ -6,7 +6,9 @@ namespace Isle.AnimationMachine
     public class StateTransition
     {
         public State from, to;
+        public bool hasExitTime = true;
         #region Settings
+       
         /// <summary>
         /// 当前动画退出点(单位：当前动画的百分比)
         /// </summary>
@@ -25,7 +27,7 @@ namespace Isle.AnimationMachine
 
         #region Todo
         public bool fixedDuration;
-        public bool hasExitTime;
+        
         #endregion
 
         /// <summary>

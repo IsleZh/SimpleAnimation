@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.UIElements;
 
 namespace Isle.AnimationMachine
 {
@@ -11,9 +12,11 @@ namespace Isle.AnimationMachine
 
         public override float GetLength()
         {
-            return base.GetLength();
+            LoadAsset();
+            length = clip.length;
+            return length;
         }
-
+        //TODO 按需加载AnimationClip
         public override void LoadAsset()
         {
             base.LoadAsset();

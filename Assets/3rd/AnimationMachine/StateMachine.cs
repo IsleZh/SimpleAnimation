@@ -53,10 +53,12 @@ namespace Isle.AnimationMachine
 
         public void Update()
         {
+            /*思路有些问题
             if (isStarted== false)
             {
-                
-            }
+                Start();
+            }*/
+            
             //有可能要同时处理两个Update
             currentState.DoUpdate(Time.deltaTime);
             //nextState.DoUpdate(Time.deltaTime);
@@ -77,9 +79,8 @@ namespace Isle.AnimationMachine
             var transitionBehaviour = transitionPlayableScript.GetBehaviour();
 
             transitionBehaviour.Switch(transition, transitionPlayableScript, m_PlayableGraph);
-            var playableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "Animation", m_PlayableAnimator.animator);
-
-            playableOutput.SetSourcePlayable(transitionPlayableScript,0);
+            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(transitionPlayableScript,0);
+            
         }
     }
 #if UNITY_EDITOR
@@ -114,8 +115,4 @@ namespace Isle.AnimationMachine
     AssetDatabase.SaveAssets();
     }*/
 #endif
-    public class TransitionHandler
-    {
-        public StateTransition transition;
-    }
 }

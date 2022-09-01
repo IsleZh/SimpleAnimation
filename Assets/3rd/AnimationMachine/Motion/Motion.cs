@@ -9,7 +9,10 @@ namespace Isle.AnimationMachine
     public class Motion
     {
         public Playable playable;
-        //TODO: 取得Motion长度，这里如果是BlendTree则需要取得各个动画混合后的长度
+
+        protected float length;
+        //TODO 取得Motion长度，这里如果是BlendTree则需要取得各个动画混合后的长度
+        //TODO 考虑在之后持久化保存ab资源加载路径，以及自动持久化保存好动画长度
         public virtual float GetLength()
         {
             return 0;
@@ -17,7 +20,7 @@ namespace Isle.AnimationMachine
 
         public virtual void LoadAsset()
         {
-            throw new System.NotImplementedException();
+            
         }
         /// <summary>
         /// 根据情况传回对应Playable

@@ -35,12 +35,15 @@ namespace Isle.AnimationMachine
         /// <param name="stateMachine"></param>
         public void Initialize(StateMachine stateMachine)
         {
+            //TODO 不知道这样初始化正确不正确
+            //transitions = new List<StateTransition>();
+            
             this.stateMachine = stateMachine;
             //#TODO 在这里准备按需加载motion 
             motion.LoadAsset();
             
             //较小的exitTime在前是为了方便判断
-            transitions.Sort((x1, x2) => x1.exitTime < x2.exitTime ? 1 : -1);
+            transitions?.Sort((x1, x2) => x1.exitTime < x2.exitTime ? 1 : -1);
         }
 
         public void DoUpdate(float deltaTime)
@@ -54,16 +57,24 @@ namespace Isle.AnimationMachine
 
         public bool OnUpdate(float deltaTime)
         {
-            if (transitions==null)
+            var preTime = timer;
+            timer+=deltaTime;
+            if (transitions==null||transitions?.Count==0)
             {
                 return false;
             }
+            Debug.Log("State::transitions不为空 开始判断切换条件"+"timer ="+timer);
             foreach (var transition in transitions)
             {
-                if (transition.TryTransition())
+                Debug.Log("timer应该超过: " + transition.exitTime * transition.from.motion.GetLength() + " 才可通过判定");
+                if (timer>transition.exitTime*transition.from.motion.GetLength())
                 {
-                    stateMachine.Goto(transition);
-                    return true; 
+                    Debug.Log("timer>transition.exitTime*transition.from.motion.GetLength()判断成通过");
+                    if (transition.TryTransition())
+                    {
+                        stateMachine.Goto(transition);
+                        return true; 
+                    }
                 }
             }
             return false;

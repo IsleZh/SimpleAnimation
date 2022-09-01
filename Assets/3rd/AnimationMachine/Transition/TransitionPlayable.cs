@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
@@ -25,7 +26,7 @@ namespace Isle.AnimationMachine
 
             //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
             //连接一个空的在0端口上        结果：无效 Visual Graph 看不到此节点
-            graph.Connect(Playable.Null, 0, mixer, 0);
+            //graph.Connect(Playable.Null, 0, mixer, 0);
             Debug.Log("motion.GetPlayable(graph) is" +motion.GetPlayable(graph));
             flag = graph.Connect(motion.GetPlayable(graph), 0, mixer, 1);
             Debug.Log("AnimationclipPlayable Connect is:" + flag);
@@ -37,17 +38,31 @@ namespace Isle.AnimationMachine
 
             clipLength = motion.GetLength();
         }
-        
         public void Switch(StateTransition transition, Playable owner, PlayableGraph graph)
         {
+            //强行防止反复switch，以后要改逻辑
+            if (m_Transition!=null)
+            {
+                return;
+            }
+            timer = 0f;
             m_Transition = transition;
             
             owner.SetInputWeight(0, 1);
 
-            //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
-            graph.Disconnect(transition.from.motion.GetPlayable(graph), 0);
-            mixer.AddInput(transition.to.motion.GetPlayable(graph), 1);
+            //mixer.DisconnectInput(0);//.GetInput(0)
+            var fromPlayable = mixer.GetInput(1);
+            mixer.DisconnectInput(1);
+            mixer.ConnectInput(0,fromPlayable,0);
             //graph.Connect(transition.to.motion.GetPlayable(graph), 0, mixer, 1);
+            Debug.Log("IsValid:"+transition.to.motion.GetPlayable(graph).GetOutput(0).IsValid());
+            mixer.ConnectInput(1,transition.to.motion.GetPlayable(graph), 0);
+           
+            //mixer.CanChangeInputs();
+            //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
+            //graph.Disconnect(transition.from.motion.GetPlayable(graph), 0);
+            //mixer.AddInput(transition.to.motion.GetPlayable(graph), 0);
+            //graph.Connect(transition.to.motion.GetPlayable(graph), 1, mixer, 0);
             //设置一个默认混合权重
             currentWeight = 0;
             mixer.SetInputWeight(0, 1-currentWeight);
@@ -55,6 +70,7 @@ namespace Isle.AnimationMachine
             mixer.SetInputWeight(1, currentWeight);
 
             clipLength = transition.from.motion.GetLength();
+            EditorApplication.isPaused = true;
         }
 
         public override void PrepareFrame(Playable owner, FrameData info)
@@ -64,10 +80,16 @@ namespace Isle.AnimationMachine
                 return;
             if (m_Transition!=null)
             {
+                Debug.Log("TransitionPlayable::m_Transition不为空，所以正在混合两个动画motion");
                 timer += info.deltaTime;
                 currentWeight = (timer / clipLength) / m_Transition.transitionDuration;
-                if(currentWeight>1)
+                
+                if (currentWeight > 1)
+                {
                     currentWeight = 1;
+                    m_Transition = null;
+                }
+                    
                 mixer.SetInputWeight(0, 1-currentWeight);
 
                 mixer.SetInputWeight(1, currentWeight);

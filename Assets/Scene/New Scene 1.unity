@@ -654,6 +654,7 @@ MonoBehaviour:
   animator: {fileID: 416113712}
   controller: {fileID: 0}
   clip: {fileID: 7400002, guid: 37c6cfe59f56e8a4799011397a870a8b, type: 3}
+  transitionClip: {fileID: 7400052, guid: 5eaab4c94e2c4224dbde8bf202505a4f, type: 3}
 --- !u!1 &424708411 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1213271810162876, guid: eadd41f7c18839c46a054791e263e18b, type: 3}
