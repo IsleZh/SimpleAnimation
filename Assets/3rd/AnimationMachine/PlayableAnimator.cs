@@ -30,6 +30,8 @@ namespace Isle.AnimationMachine
         public void Start()
         {
             m_PlayableGraph = PlayableGraph.Create();
+            m_AnimationPlayableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "TestAnimation", animator);
+            controller.Initialize(this,m_PlayableGraph);
         }
 
         [ContextMenu("TestInitAnimation")]
@@ -65,19 +67,25 @@ namespace Isle.AnimationMachine
             var animation2 = new Animation();
             animation2.clip = this.transitionClip;
             
-            var state = ScriptableObject.CreateInstance<State>();
-            state.motion = animation;
+            var state1 = ScriptableObject.CreateInstance<State>();
+            state1.motion = animation;
             var state2 = ScriptableObject.CreateInstance<State>();
             state2.motion = animation2;
 
-            var transition = new StateTransition {transitionDuration = 5f, exitTime = 2f, from = state, to = state2};
-
-            state.transitions = new List<StateTransition> {transition};
+            var transition = new StateTransition {transitionDuration = 2f, exitTime = 2f, from = state1, to = state2};
+            
+            state1.transitions = new List<StateTransition> {transition};
+            
+            
+            //返回 的Transition
+            var transition2 = new StateTransition {transitionDuration = 2f, exitTime = 2f, from = state2, to = state1};
+            state2.transitions = new List<StateTransition> {transition2};
+            
 
             var stateMachine = ScriptableObject.CreateInstance<StateMachine>();
-            stateMachine.defaultState = state;
+            stateMachine.defaultState = state1;
             
-            state.Initialize(stateMachine);
+            state1.Initialize(stateMachine);
             state2.Initialize(stateMachine);
             
             var layer = ScriptableObject.CreateInstance<StateLayer>();

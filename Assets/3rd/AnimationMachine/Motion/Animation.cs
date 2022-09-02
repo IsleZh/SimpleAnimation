@@ -9,6 +9,7 @@ namespace Isle.AnimationMachine
     {
         public AnimationClip clip;
         private Playable m_Playable;
+        public string abPath;
 
         public override float GetLength()
         {

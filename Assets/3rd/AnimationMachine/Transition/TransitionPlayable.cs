@@ -8,13 +8,16 @@ namespace Isle.AnimationMachine
     public class TransitionPlayable : PlayableBehaviour
     {
         private StateTransition m_Transition;
-        private Playable mixer;
+        private StateMachine m_StateMachine;
+        Playable mixer;
         private float currentWeight;
         private float clipLength;
         private float timer;
 
-        public void Initialize(Motion motion, Playable owner, PlayableGraph graph)
+        public void Initialize(Motion motion, Playable owner,StateMachine stateMachine,PlayableGraph graph)
         {
+            m_StateMachine = stateMachine;
+            
             bool flag;
             owner.SetInputCount(1);
 
@@ -55,7 +58,7 @@ namespace Isle.AnimationMachine
             mixer.DisconnectInput(1);
             mixer.ConnectInput(0,fromPlayable,0);
             //graph.Connect(transition.to.motion.GetPlayable(graph), 0, mixer, 1);
-            Debug.Log("IsValid:"+transition.to.motion.GetPlayable(graph).GetOutput(0).IsValid());
+            //Debug.Log("IsValid:"+transition.to.motion.GetPlayable(graph).GetOutput(0).IsValid());
             mixer.ConnectInput(1,transition.to.motion.GetPlayable(graph), 0);
            
             //mixer.CanChangeInputs();
@@ -70,7 +73,8 @@ namespace Isle.AnimationMachine
             mixer.SetInputWeight(1, currentWeight);
 
             clipLength = transition.from.motion.GetLength();
-            EditorApplication.isPaused = true;
+            //TODO 测试转换BUG
+            //EditorApplication.isPaused = true;
         }
 
         public override void PrepareFrame(Playable owner, FrameData info)
@@ -87,7 +91,13 @@ namespace Isle.AnimationMachine
                 if (currentWeight > 1)
                 {
                     currentWeight = 1;
+                    var fromPlayable = mixer.GetInput(0);
+                    //在Graph的Mixer中断开连接
+                    mixer.DisconnectInput(0);
+                    //直接Destroy不知道行不行，是不是应该先从Graph中移出，
+                    //fromPlayable.Destroy();
                     m_Transition = null;
+                    m_StateMachine.FinishedGoto();
                 }
                     
                 mixer.SetInputWeight(0, 1-currentWeight);

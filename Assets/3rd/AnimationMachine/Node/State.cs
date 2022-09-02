@@ -17,14 +17,12 @@ namespace Isle.AnimationMachine
         /// <summary>
         ///   <para>The motion assigned to this state.</para>
         /// </summary>
-        public Motion motion { get; set; }
-        
+        public Motion motion;
+
         /// <summary>
         ///   <para>The transitions that are going out of the state.</para>
         /// </summary>
-        public List<StateTransition> transitions { get; set; }
-
-        //private float enterTime;
+        [SerializeField] public List<StateTransition> transitions;
         private float timer;
 
         public StateMachine stateMachine;
@@ -52,7 +50,7 @@ namespace Isle.AnimationMachine
         }
         public void OnEnter()
         {
-            
+            timer = 0;
         }
 
         public bool OnUpdate(float deltaTime)
@@ -63,20 +61,23 @@ namespace Isle.AnimationMachine
             {
                 return false;
             }
-            Debug.Log("State::transitions不为空 开始判断切换条件"+"timer ="+timer);
-            foreach (var transition in transitions)
+            //Debug.Log("State::transitions不为空 开始判断切换条件"+"timer ="+timer);
+            if (stateMachine.currentTransition==null)
             {
-                Debug.Log("timer应该超过: " + transition.exitTime * transition.from.motion.GetLength() + " 才可通过判定");
-                if (timer>transition.exitTime*transition.from.motion.GetLength())
+                foreach (var transition in transitions)
                 {
-                    Debug.Log("timer>transition.exitTime*transition.from.motion.GetLength()判断成通过");
-                    if (transition.TryTransition())
+                    if (timer>transition.exitTime*transition.from.motion.GetLength())
                     {
-                        stateMachine.Goto(transition);
-                        return true; 
+                        Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.motion.GetLength());
+                        if (transition.TryTransition())
+                        {
+                            stateMachine.Goto(transition);
+                            return true; 
+                        }
                     }
                 }
             }
+
             return false;
         }
 
@@ -89,7 +90,78 @@ namespace Isle.AnimationMachine
         {
             
         }
+#if UNITY_EDITOR
+        [ContextMenu("CreateTransition")]
+        public StateTransition CreateTransition()
+        {
+            StateTransition stateTransition = ScriptableObject.CreateInstance(typeof(StateTransition)) as StateTransition;
+            stateTransition.name = "StateTransition";
+            stateTransition.guid = GUID.Generate().ToString();
 
+            Undo.RecordObject(this, "CreateStateMachine");
+            if (this.transitions==null)
+            {
+                this.transitions = new List<StateTransition>();
+            }
+            this.transitions.Add(stateTransition);
+
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(stateTransition, this);
+            }
+
+            Undo.RegisterCreatedObjectUndo(stateTransition, "CreateTransition");
+
+            AssetDatabase.SaveAssets();
+            return stateTransition;
+        }
+#endif
+#if UNITY_EDITOR
+        [ContextMenu("CreateAnimation")]
+        public Animation CreateAnimation()
+        {
+            Animation animation = ScriptableObject.CreateInstance(typeof(Animation)) as Animation;
+            animation.name = "Animation";
+            animation.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "CreateAnimation");
+            this.motion = animation;
+
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(animation, this);
+            }
+
+            Undo.RegisterCreatedObjectUndo(animation, "CreateAnimation");
+
+            AssetDatabase.SaveAssets();
+            return animation;
+        }
+#endif
+#if UNITY_EDITOR
+        [ContextMenu("CreateBlendTree")]
+        public StateMachine CreateBlendTree()
+        {
+            //TODO CreateBlendTree
+            /*StateMachine stateMachine = ScriptableObject.CreateInstance(typeof(StateMachine)) as StateMachine;
+            stateMachine.name = "StateMachine";
+            stateMachine.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "CreateStateMachine");
+            this.stateMachine = stateMachine;
+
+            if (!Application.isPlaying)
+            {
+                AssetDatabase.AddObjectToAsset(stateMachine, this);
+            }
+
+            Undo.RegisterCreatedObjectUndo(stateMachine, "CreateStateMachine");
+
+            AssetDatabase.SaveAssets();
+            return stateMachine;*/
+            return null;
+        }
+#endif
         #region Todo
         /// <summary>
         ///   <para>The default speed of the motion.</para>

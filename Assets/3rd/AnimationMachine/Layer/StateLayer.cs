@@ -1,6 +1,7 @@
 ﻿using System;
 using FUnit;
 using UnityEngine;
+using UnityEngine.Playables;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -11,8 +12,6 @@ namespace Isle.AnimationMachine
     public class StateLayer : ScriptableObject
     {
         [HideInInspector]public string guid;
-        
-        private string m_Name;
         [SerializeField]private StateMachine m_StateMachine;
         private AvatarMask m_AvatarMask;
         private LayerBlendingMode m_BlendingMode;
@@ -20,15 +19,7 @@ namespace Isle.AnimationMachine
         private bool m_IKPass;
         private float m_DefaultWeight;
         private bool m_SyncedLayerAffectsTiming;
-
-        /// <summary>
-        ///   <para>The name of the layer.</para>
-        /// </summary>
-        public string name
-        {
-            get => this.m_Name;
-            set => this.m_Name = value;
-        }
+        
 
         /// <summary>
         ///   <para>The state machine for the layer.</para>
@@ -94,6 +85,12 @@ namespace Isle.AnimationMachine
             set => this.m_SyncedLayerAffectsTiming = value;
         }
 
+        public void Initialize(PlayableAnimator controller,PlayableGraph graph)
+        {
+            stateMachine.Initialize(controller,graph,this);
+            stateMachine.Start();
+        }
+        
         public void Update()
         {
             if (m_StateMachine!=null)
@@ -123,7 +120,6 @@ namespace Isle.AnimationMachine
             AssetDatabase.SaveAssets();
             return stateMachine;
         }
-
 #endif
     }
 }

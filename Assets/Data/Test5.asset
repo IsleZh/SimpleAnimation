@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: 9e96997559fc04043b56aebcd7cfbd1e
   position: {x: 40, y: 41}
@@ -38,14 +38,14 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   state: 0
-  started: 0
+  started: 1
   guid: 387139a8bcdbcf74492d92ca143b3f87
-  position: {x: -13.000076, y: -275.6099}
+  position: {x: -13, y: -417.04}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   description: "\u8282\u70B9\u6CE8\u91CA"
-  child: {fileID: 3347566165103116654}
+  child: {fileID: 7036727208014013074}
 --- !u!114 &-5931173433799257320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,10 +83,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: 1022e67971b9e3e4fa08687620f62b22
-  position: {x: -297, y: 41}
+  position: {x: -280, y: 41}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
   state: 0
-  started: 0
+  started: 1
   guid: 8625720689ecbe347a75396242190dd8
   position: {x: 540.55994, y: 41}
   blackboard:
@@ -117,7 +117,7 @@ MonoBehaviour:
     moveToObject: {fileID: 0}
   description: "\u8282\u70B9\u6CE8\u91CA"
   duration: 1
-  clipName: Ninja@cliff_jump
+  clipName: Ninja@balance_turn_R
   clip: {fileID: 0}
   animator: {fileID: 0}
   exitOnEnd: 0
@@ -158,10 +158,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89265f6b366e4832b4ba2fff243e0137, type: 3}
   m_Name: WaitNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: 71a8a764bb3db3646a42930a3bbe2dc7
-  position: {x: -476.08002, y: 41}
+  position: {x: -447, y: 41}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: bed17da802aa3b0418737da37543ff9a
   position: {x: 205.55994, y: 41}
@@ -219,6 +219,7 @@ MonoBehaviour:
   - {fileID: -4030102891922181416}
   - {fileID: 8560386680518662793}
   - {fileID: -5931173433799257320}
+  - {fileID: 7036727208014013074}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -235,7 +236,7 @@ MonoBehaviour:
   m_Name: SequencerNode
   m_EditorClassIdentifier: 
   state: 0
-  started: 0
+  started: 1
   guid: 902bf668cfe376348acbdf1ce5ccef57
   position: {x: -12.999962, y: -109.35506}
   blackboard:
@@ -265,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: 5caf35401aaf68442a03c10e1af62f15
   position: {x: -110, y: 41}
@@ -278,6 +279,27 @@ MonoBehaviour:
   clip: {fileID: 0}
   animator: {fileID: 0}
   exitOnEnd: 0
+--- !u!114 &7036727208014013074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6546abb7aa1f53a42bb387e83ac72d74, type: 3}
+  m_Name: RepeatNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 1
+  guid: db7905e3fc309664d9c1faeb9065b02d
+  position: {x: -13, y: -247}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  description: "\u8282\u70B9\u6CE8\u91CA"
+  child: {fileID: 3347566165103116654}
 --- !u!114 &8276257334532635283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf14659779c4300af7868d52edce1b7, type: 3}
   m_Name: PlayableLoadNode
   m_EditorClassIdentifier: 
-  state: 0
+  state: 2
   started: 0
   guid: 437b69504d6b84842a3b14d24d728318
   position: {x: 378.55994, y: 41}

@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 043e04f9427f4c7cb25cf369184436cf, type: 3}
-  m_Name: PlayableAnimatorController
+  m_Name: PlayableAnimatorController 1
   m_EditorClassIdentifier: 
   stateLayers:
   - {fileID: 2413966495594464982}

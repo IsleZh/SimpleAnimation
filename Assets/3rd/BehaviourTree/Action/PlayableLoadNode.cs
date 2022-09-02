@@ -24,7 +24,7 @@ namespace Isle.BehaviourTree
             //var playableOutput = AnimationPlayableOutput.Create(playableGraph, "IsleAnimation", animator);
             //#TODO 发现找不到运行时游戏中的对象，所以只能出此下策Find(AI)。。。我记得Timeline里有一种找对象并且bind的方法。
             var playableOutput = AnimationPlayableOutput.Create(playableGraph, "IsleAnimation",
-                GameObject.Find("AI2").GetComponent<Animator>());
+                GameObject.Find("AI").GetComponent<Animator>());
             //AB加载Clip
             clip = AnimationManager.Instance.PrepareAnimation(clipName);
             // 将剪辑包裹在可播放项中

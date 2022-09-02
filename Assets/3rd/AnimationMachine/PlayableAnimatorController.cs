@@ -2,35 +2,43 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.Animations;
+using UnityEngine.Playables;
 
 
 namespace Isle.AnimationMachine
 {
-    [CreateAssetMenu(fileName = "PlayableAnimatorController", menuName = "PlayableAnimation/Playable Animator Controller")]
+    [CreateAssetMenu(fileName = "PlayableAnimatorController",
+        menuName = "PlayableAnimation/Playable Animator Controller")]
     public class PlayableAnimatorController : ScriptableObject
     {
         //private Animator animator;
         //private AnimatorController animatorController;
-        [SerializeField]private List<StateLayer> m_StateLayers;
+        [SerializeField] private List<StateLayer> stateLayers;
+        [SerializeField] public List<AnimatorControllerParameter> Parameters;
 
         public List<StateLayer> layers
         {
-            get => m_StateLayers;
-            set => m_StateLayers = value;
+            get => stateLayers;
+            set => stateLayers = value;
         }
+        AnimatorState m_Xxx;
 
-        public AnimatorControllerParameter[] parameters;
-        AnimatorState xxx;
-
+        public void Initialize(PlayableAnimator animator,PlayableGraph graph)
+        {
+            foreach (var layer in stateLayers)
+            {
+                layer.Initialize(animator,graph);
+            }
+        }
         public void Update()
         {
-            foreach (var sl in m_StateLayers)
+            foreach (var sl in stateLayers)
             {
                 Debug.Log("State Layers>0");
                 sl.Update();
             }
         }
-        
+
         /*public void Test()
         {
             animator = new Animator();
@@ -76,7 +84,7 @@ namespace Isle.AnimationMachine
         public StateLayer GetLayer(int layerIndex)
         {
             if (!CheckLayerIfExist(layerIndex)) return null;
-            return m_StateLayers[layerIndex];
+            return stateLayers[layerIndex];
         }
 
         /*public void SetLayerWeight(int layerIndex, float weight)
@@ -89,13 +97,13 @@ namespace Isle.AnimationMachine
 
         private bool CheckLayerIfExist(int layerIndex)
         {
-            if (layerIndex >= m_StateLayers.Count || layerIndex < 0)
+            if (layerIndex >= stateLayers.Count || layerIndex < 0)
             {
                 Debug.LogErrorFormat("Layer index:{0} is out of range!", layerIndex);
                 return false;
             }
 
-            StateLayer layer = m_StateLayers[layerIndex];
+            StateLayer layer = stateLayers[layerIndex];
             if (layer == null)
             {
                 Debug.LogErrorFormat("Layer index:{0} has destroyed!", layerIndex);
@@ -150,7 +158,11 @@ namespace Isle.AnimationMachine
             layer.guid = GUID.Generate().ToString();
 
             Undo.RecordObject(this, "CreateStateMachine");
-            this.m_StateLayers.Add(layer);;
+            if (this.stateLayers==null)
+            {
+                this.stateLayers = new List<StateLayer>();
+            }
+            this.stateLayers.Add(layer);
 
             if (!Application.isPlaying)
             {

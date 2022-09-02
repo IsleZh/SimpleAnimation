@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Isle.AnimationMachine
 {
-    [SerializeField]
-    public class StateTransition
+    public class StateTransition : ScriptableObject
     {
+        public string guid;
         public State from, to;
         public bool hasExitTime = true;
         #region Settings
@@ -27,7 +28,8 @@ namespace Isle.AnimationMachine
 
         #region Todo
         public bool fixedDuration;
-        
+
+
         #endregion
 
         /// <summary>
