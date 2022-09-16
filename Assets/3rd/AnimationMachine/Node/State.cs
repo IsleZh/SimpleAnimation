@@ -24,7 +24,7 @@ namespace Isle.AnimationMachine
         /// </summary>
         [SerializeField] public List<StateTransition> transitions;
         private float timer;
-
+        
         public StateMachine stateMachine;
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Isle.AnimationMachine
                 {
                     if (timer>transition.exitTime*transition.from.motion.GetLength())
                     {
-                        Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.motion.GetLength());
                         if (transition.TryTransition())
                         {
+                            Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.motion.GetLength());
                             stateMachine.Goto(transition);
                             return true; 
                         }
@@ -91,6 +91,10 @@ namespace Isle.AnimationMachine
             
         }
 #if UNITY_EDITOR
+        /// <summary>
+        /// 创建转换
+        /// </summary>
+        /// <returns></returns>
         [ContextMenu("CreateTransition")]
         public StateTransition CreateTransition()
         {
@@ -139,27 +143,25 @@ namespace Isle.AnimationMachine
         }
 #endif
 #if UNITY_EDITOR
-        [ContextMenu("CreateBlendTree")]
-        public StateMachine CreateBlendTree()
+        [ContextMenu("CreateBlendTree1D")]
+        public BlendTree1D CreateBlendTree1D()
         {
-            //TODO CreateBlendTree
-            /*StateMachine stateMachine = ScriptableObject.CreateInstance(typeof(StateMachine)) as StateMachine;
-            stateMachine.name = "StateMachine";
-            stateMachine.guid = GUID.Generate().ToString();
+            BlendTree1D blendTree = ScriptableObject.CreateInstance(typeof(BlendTree1D)) as BlendTree1D;
+            blendTree.name = "BlendTree1D";
+            blendTree.guid = GUID.Generate().ToString();
 
-            Undo.RecordObject(this, "CreateStateMachine");
-            this.stateMachine = stateMachine;
+            Undo.RecordObject(this, "CreateBlendTree1D");
+            this.motion = blendTree;
 
             if (!Application.isPlaying)
             {
-                AssetDatabase.AddObjectToAsset(stateMachine, this);
+                AssetDatabase.AddObjectToAsset(blendTree, this);
             }
 
-            Undo.RegisterCreatedObjectUndo(stateMachine, "CreateStateMachine");
+            Undo.RegisterCreatedObjectUndo(blendTree, "CreateBlendTree1D");
 
             AssetDatabase.SaveAssets();
-            return stateMachine;*/
-            return null;
+            return blendTree;
         }
 #endif
         #region Todo

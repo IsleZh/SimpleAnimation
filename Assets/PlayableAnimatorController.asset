@@ -36,6 +36,7 @@ MonoBehaviour:
   guid: 34dd8d9c2ba4a174ba4cd547ef3dd05e
   clip: {fileID: 7400002, guid: 37c6cfe59f56e8a4799011397a870a8b, type: 3}
   abPath: 
+  length: 1
 --- !u!114 &-6783175446148124843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +74,7 @@ MonoBehaviour:
   Parameters:
   - Name: IntParam
     ParameterType: 0
-    IntValue: 0
+    IntValue: 1323
     FloatValue: 0
     BoolValue: 0
   - Name: BoolParam
@@ -136,7 +137,7 @@ MonoBehaviour:
   motion: {fileID: 4581974835268274176}
   transitions:
   - {fileID: 78438159266241082}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: -8881589889410019708}
 --- !u!114 &4581974835268274176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +153,7 @@ MonoBehaviour:
   guid: ba9d221de24778244b2f71f5da4e2bcd
   clip: {fileID: 7400012, guid: 37c6cfe59f56e8a4799011397a870a8b, type: 3}
   abPath: 
+  length: 0.6333334
 --- !u!114 &8471597589471978559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,4 +170,4 @@ MonoBehaviour:
   motion: {fileID: -8067059407336845132}
   transitions:
   - {fileID: -6783175446148124843}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: -8881589889410019708}

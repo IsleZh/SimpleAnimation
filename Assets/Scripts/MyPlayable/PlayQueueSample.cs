@@ -7,7 +7,6 @@ namespace MyPlayable
     public class PlayQueuePlayable : PlayableBehaviour
 
     {
-
         private int m_CurrentClipIndex = -1;
 
         private float m_TimeToNextClip;

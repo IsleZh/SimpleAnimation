@@ -1,0 +1,224 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8150610848943128385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d016d385ea246c499ddb0e2e2de5248, type: 3}
+  m_Name: StateMachine
+  m_EditorClassIdentifier: 
+  guid: ed4fa908e9c42ef4f853fd89c95f871d
+  m_States:
+  - {fileID: -946307300810146182}
+  - {fileID: 6244142894019961044}
+  m_StateMachines: []
+  defaultState: {fileID: -946307300810146182}
+  currentState: {fileID: 0}
+  nextState: {fileID: 0}
+  currentTransition: {fileID: 0}
+--- !u!114 &-6241749696454973970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c0aa565b2a45218c1896e763562331, type: 3}
+  m_Name: Animation
+  m_EditorClassIdentifier: 
+  guid: ad12be7dd0bb29c4b9095752dd1ef3fb
+  clip: {fileID: 7400052, guid: 5eaab4c94e2c4224dbde8bf202505a4f, type: 3}
+  abPath: 
+  length: 3.125
+--- !u!114 &-5796265311833611660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c0aa565b2a45218c1896e763562331, type: 3}
+  m_Name: Animation
+  m_EditorClassIdentifier: 
+  guid: 3227d34d766354043bea55ff411cb478
+  clip: {fileID: 7400002, guid: 37c6cfe59f56e8a4799011397a870a8b, type: 3}
+  abPath: 
+  length: 1
+--- !u!114 &-946307300810146182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175220e3d033494d9252005b354d58fb, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  guid: 6622f80aad44f2a4ba318d764025c29e
+  motion: {fileID: 5499211086783240041}
+  transitions:
+  - {fileID: -416266962529036054}
+  stateMachine: {fileID: -8150610848943128385}
+--- !u!114 &-416266962529036054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c3f3b3cf2474378be38d1d88559246b, type: 3}
+  m_Name: StateTransition
+  m_EditorClassIdentifier: 
+  guid: 4dffc8222937fc242b63995b65e416f0
+  from: {fileID: -946307300810146182}
+  to: {fileID: 6244142894019961044}
+  hasExitTime: 1
+  exitTime: 1
+  transitionDuration: 1
+  transitionOffset: 0
+  Conditions:
+  - Parameter: Transition
+    ParameterType: 2
+    IntValue: 0
+    FloatValue: 0
+    BoolValue: 0
+  controller: {fileID: 11400000}
+  fixedDuration: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043e04f9427f4c7cb25cf369184436cf, type: 3}
+  m_Name: BlendTreeController 1
+  m_EditorClassIdentifier: 
+  stateLayers:
+  - {fileID: 6438643695196141113}
+  Parameters:
+  - Name: X
+    ParameterType: 1
+    IntValue: 0
+    FloatValue: 0
+    BoolValue: 0
+  - Name: Transition
+    ParameterType: 2
+    IntValue: 0
+    FloatValue: 0
+    BoolValue: 0
+--- !u!114 &1233881148506670956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c3f3b3cf2474378be38d1d88559246b, type: 3}
+  m_Name: StateTransition
+  m_EditorClassIdentifier: 
+  guid: 7974d761e85157d4497be8c0ced9b1a0
+  from: {fileID: 6244142894019961044}
+  to: {fileID: -946307300810146182}
+  hasExitTime: 1
+  exitTime: 1
+  transitionDuration: 1
+  transitionOffset: 0
+  Conditions:
+  - Parameter: Transition
+    ParameterType: 2
+    IntValue: 0
+    FloatValue: 0
+    BoolValue: 1
+  controller: {fileID: 11400000}
+  fixedDuration: 0
+--- !u!114 &3645775287456616683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c0aa565b2a45218c1896e763562331, type: 3}
+  m_Name: Animation
+  m_EditorClassIdentifier: 
+  guid: 0b266a94a64f1c448a6984526e3c6113
+  clip: {fileID: 7400012, guid: 37c6cfe59f56e8a4799011397a870a8b, type: 3}
+  abPath: 
+  length: 0.6333334
+--- !u!114 &5499211086783240041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb4524e6871265479b4c857a80a8467, type: 3}
+  m_Name: BlendTree1D
+  m_EditorClassIdentifier: 
+  guid: 77cdb6722edaac8488217deef1b0ecb7
+  motionInfos:
+  - motion: {fileID: -5796265311833611660}
+    threshold: 0
+    speed: 1
+  - motion: {fileID: 3645775287456616683}
+    threshold: 1
+    speed: 1
+  thresholdArray:
+  - 0
+  - 1
+  Parameter: X
+  controller: {fileID: 11400000}
+--- !u!114 &6244142894019961044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175220e3d033494d9252005b354d58fb, type: 3}
+  m_Name: State
+  m_EditorClassIdentifier: 
+  guid: 220a80acd0a1c1a4eb9bb0f4f7e57ac3
+  motion: {fileID: -6241749696454973970}
+  transitions:
+  - {fileID: 1233881148506670956}
+  stateMachine: {fileID: -8150610848943128385}
+--- !u!114 &6438643695196141113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0135263f9dd4606affdebbccd1e04d9, type: 3}
+  m_Name: StateLayer
+  m_EditorClassIdentifier: 
+  guid: 162437ee1e93aae408c8e36a80cfa82b
+  m_StateMachine: {fileID: -8150610848943128385}
+  m_PlayableAnimatorController: {fileID: 11400000}

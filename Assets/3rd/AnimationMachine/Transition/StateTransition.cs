@@ -24,8 +24,8 @@ namespace Isle.AnimationMachine
         public float transitionOffset;
         #endregion
         
-        public TransitionCondition[] conditions;
-
+        [SerializeField]public TransitionCondition[] Conditions;
+        [SerializeField]public PlayableAnimatorController controller;
         #region Todo
         public bool fixedDuration;
 
@@ -38,6 +38,15 @@ namespace Isle.AnimationMachine
         /// <returns></returns>
         public bool TryTransition()
         {
+            foreach (var cond in Conditions)
+            {
+                var param = controller.Parameters.Find(param => param.Name == cond.Parameter);
+                if (param.BoolValue !=cond.BoolValue)
+                {
+                    return false;
+                }
+                
+            }
             return true;
         }
 

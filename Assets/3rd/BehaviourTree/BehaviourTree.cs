@@ -147,7 +147,7 @@ namespace Isle.BehaviourTree
 
             return tree;
         }
-
+        
         public void Bind( /*AiAgent agent*/)
         {
             //#TODO 绑定资源可能是用这种方法

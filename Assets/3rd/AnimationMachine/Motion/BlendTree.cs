@@ -5,7 +5,7 @@ namespace Isle.AnimationMachine
 {
     public class BlendTree : Motion
     {
-        private Playable m_Playable;
+        //private Playable m_Playable;
         //TODO: 取得Motion长度，这里如果是BlendTree则需要取得各个动画混合后的长度
         public override float GetLength()
         {

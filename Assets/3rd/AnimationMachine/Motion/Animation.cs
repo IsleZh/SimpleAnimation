@@ -8,8 +8,9 @@ namespace Isle.AnimationMachine
     public class Animation : Motion
     {
         public AnimationClip clip;
-        private Playable m_Playable;
+        //private Playable m_Playable;
         public string abPath;
+        [SerializeField] private float length;
 
         public override float GetLength()
         {

@@ -9,39 +9,49 @@ namespace Isle.AnimationMachine
     {
         private StateTransition m_Transition;
         private StateMachine m_StateMachine;
-        Playable mixer;
+        private Playable mixer;
         private float currentWeight;
         private float clipLength;
         private float timer;
 
-        public void Initialize(Motion motion, Playable owner,StateMachine stateMachine,PlayableGraph graph)
+        public void Init(Motion motion, Playable owner,StateMachine stateMachine)
         {
             m_StateMachine = stateMachine;
-            
             bool flag;
+            var graph = owner.GetGraph();
+            //设置输出端口数
             owner.SetInputCount(1);
-
+            //创建动画混合器 输入端口数=2
             mixer = AnimationMixerPlayable.Create(graph, 2);
-
+            //连接mixer到端口0
             flag = graph.Connect(mixer, 0, owner, 0);
             Debug.Log("TransitionPlayable Connect is:" + flag);
+            //设置端口的输入权重
             owner.SetInputWeight(0, 1);
 
             //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
             //连接一个空的在0端口上        结果：无效 Visual Graph 看不到此节点
             //graph.Connect(Playable.Null, 0, mixer, 0);
             Debug.Log("motion.GetPlayable(graph) is" +motion.GetPlayable(graph));
-            flag = graph.Connect(motion.GetPlayable(graph), 0, mixer, 1);
+            //获得playable
+            var motionPlayable = motion.GetPlayable(graph);
+            //连接Motion的Playable到mixer
+            flag = graph.Connect(motionPlayable, 0, mixer, 1);
             Debug.Log("AnimationclipPlayable Connect is:" + flag);
             //设置一个默认混合权重
             currentWeight = 1;
             mixer.SetInputWeight(0, 1-currentWeight);
-
             mixer.SetInputWeight(1, currentWeight);
-
+            //获取当前长度
             clipLength = motion.GetLength();
         }
-        public void Switch(StateTransition transition, Playable owner, PlayableGraph graph)
+        /// <summary>
+        /// 开始切换状态
+        /// </summary>
+        /// <param name="transition"></param>
+        /// <param name="owner"></param>
+        /// <param name="graph"></param>
+        public void DoSwitch(StateTransition transition, Playable owner)
         {
             //强行防止反复switch，以后要改逻辑
             if (m_Transition!=null)
@@ -50,16 +60,17 @@ namespace Isle.AnimationMachine
             }
             timer = 0f;
             m_Transition = transition;
-            
             owner.SetInputWeight(0, 1);
-
-            //mixer.DisconnectInput(0);//.GetInput(0)
+            //获得端口1的Playable
             var fromPlayable = mixer.GetInput(1);
+            //断开端口1的输入
             mixer.DisconnectInput(1);
+            //然后连接到端口0上
             mixer.ConnectInput(0,fromPlayable,0);
             //graph.Connect(transition.to.motion.GetPlayable(graph), 0, mixer, 1);
             //Debug.Log("IsValid:"+transition.to.motion.GetPlayable(graph).GetOutput(0).IsValid());
-            mixer.ConnectInput(1,transition.to.motion.GetPlayable(graph), 0);
+            //最后把要转换的动画连接到端口1上
+            mixer.ConnectInput(1,transition.to.motion.GetPlayable(owner.GetGraph()), 0);
            
             //mixer.CanChangeInputs();
             //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
@@ -104,41 +115,6 @@ namespace Isle.AnimationMachine
 
                 mixer.SetInputWeight(1, currentWeight);
             }
-            /*// 必要时，前进到下一剪辑
-
-            m_TimeToNextClip -= (float) info.deltaTime;
-
-            if (m_TimeToNextClip <= 0.0f)
-
-            {
-                m_CurrentClipIndex++;
-
-                if (m_CurrentClipIndex >= mixer.GetInputCount())
-
-                    m_CurrentClipIndex = 0;
-
-                var currentClip = (AnimationClipPlayable) mixer.GetInput(m_CurrentClipIndex);
-
-                // 重置时间，以便下一个剪辑从正确位置开始
-
-                currentClip.SetTime(0);
-
-                m_TimeToNextClip = currentClip.GetAnimationClip().length;
-            }
-
-            // 调整输入权重
-
-            for (int clipIndex = 0; clipIndex < mixer.GetInputCount(); ++clipIndex)
-
-            {
-                if (Mathf.Abs(clipIndex - m_CurrentClipIndex) <= 1)
-
-                    mixer.SetInputWeight(clipIndex, 1.0f);
-
-                else
-
-                    mixer.SetInputWeight(clipIndex, 0.0f);
-            }*/
         }
     }
 }

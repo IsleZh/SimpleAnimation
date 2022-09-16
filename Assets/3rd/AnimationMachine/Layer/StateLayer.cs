@@ -13,13 +13,19 @@ namespace Isle.AnimationMachine
     {
         [HideInInspector]public string guid;
         [SerializeField]private StateMachine m_StateMachine;
+        [SerializeField]private PlayableAnimatorController m_PlayableAnimatorController;
         private AvatarMask m_AvatarMask;
         private LayerBlendingMode m_BlendingMode;
         private int m_SyncedLayerIndex = -1;
         private bool m_IKPass;
         private float m_DefaultWeight;
         private bool m_SyncedLayerAffectsTiming;
-        
+
+        public PlayableAnimatorController controller
+        {
+            get => m_PlayableAnimatorController;
+            set => m_PlayableAnimatorController = value;
+        }
 
         /// <summary>
         ///   <para>The state machine for the layer.</para>

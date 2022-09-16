@@ -31,6 +31,8 @@ namespace Isle.AnimationMachine
         {
             m_PlayableGraph = PlayableGraph.Create();
             m_AnimationPlayableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "TestAnimation", animator);
+
+            controller = Instantiate(controller);
             controller.Initialize(this,m_PlayableGraph);
         }
 

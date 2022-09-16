@@ -20,6 +20,12 @@ namespace Isle.AnimationMachine
         private PlayableAnimator m_PlayableAnimator;
         private StateLayer m_StateLayer;
 
+        public PlayableGraph playableGraph => m_PlayableGraph;
+
+        public PlayableAnimator playableAnimator => m_PlayableAnimator;
+
+        public StateLayer stateLayer => m_StateLayer;
+
         #endregion
 
 
@@ -27,11 +33,9 @@ namespace Isle.AnimationMachine
         [SerializeField] private List<StateMachine> m_StateMachines;
 
         public List<State> states => m_States;
-
         public List<StateMachine> stateMachines => m_StateMachines;
-
         public State defaultState, currentState, nextState;
-        public ScriptPlayable<TransitionPlayable> transitionPlayableBehaviour;
+        public ScriptPlayable<TransitionPlayable> TransitionPlayable;
         public StateTransition currentTransition;
 
         private bool isStarted = false;
@@ -41,8 +45,8 @@ namespace Isle.AnimationMachine
             m_PlayableAnimator = playableAnimator;
             m_StateLayer = stateLayer;
             m_PlayableGraph = graph;
-            transitionPlayableBehaviour = ScriptPlayable<TransitionPlayable>.Create(m_PlayableGraph);
-            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(transitionPlayableBehaviour, 0);
+            TransitionPlayable = ScriptPlayable<TransitionPlayable>.Create(m_PlayableGraph);
+            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
 
             foreach (var state in m_States)
             {
@@ -52,25 +56,16 @@ namespace Isle.AnimationMachine
 
         public void Start()
         {
-            var transitionBehaviour = transitionPlayableBehaviour.GetBehaviour();
-
-            //m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(transitionBehaviour,0);
+            var transitionPlayableBehaviour = TransitionPlayable.GetBehaviour();
 
             currentState = defaultState;
-            Debug.Log("playable is :" + currentState.motion.playable);
-            transitionBehaviour.Initialize(currentState.motion, transitionPlayableBehaviour, this, m_PlayableGraph);
+            transitionPlayableBehaviour.Init(currentState.motion, TransitionPlayable, this);
             isStarted = true;
             m_PlayableGraph.Play();
         }
 
         public void Update()
         {
-            /*思路有些问题
-            if (isStarted== false)
-            {
-                Start();
-            }*/
-
             //有可能要同时处理两个Update
             currentState.DoUpdate(Time.deltaTime);
             //nextState.DoUpdate(Time.deltaTime);
@@ -83,8 +78,8 @@ namespace Isle.AnimationMachine
         public void FinishedGoto()
         {
             currentState.OnExit();
+            nextState.OnEnter();
             currentState = nextState;
-            currentState.OnEnter();
             nextState = null;
             currentTransition = null;
         }
@@ -93,11 +88,15 @@ namespace Isle.AnimationMachine
         {
             currentTransition = transition;
             nextState = transition.to;
-            var transitionBehaviour = transitionPlayableBehaviour.GetBehaviour();
-            transitionBehaviour.Switch(transition, transitionPlayableBehaviour, m_PlayableGraph);
-            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(transitionPlayableBehaviour, 0);
+            var transitionBehaviour = TransitionPlayable.GetBehaviour();
+            transitionBehaviour.DoSwitch(transition, TransitionPlayable);
+            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
         }
 #if UNITY_EDITOR
+        /// <summary>
+        /// 创建状态机
+        /// </summary>
+        /// <returns></returns>
         [ContextMenu("CreateStateMatchine")]
         public StateMachine CreateMatchine()
         {
@@ -122,6 +121,10 @@ namespace Isle.AnimationMachine
             AssetDatabase.SaveAssets();
             return stateMachine;
         }
+        /// <summary>
+        /// 创建状态
+        /// </summary>
+        /// <returns></returns>
         [ContextMenu("CreateState")]
         public State CreateState()
         {
