@@ -101,17 +101,19 @@ MonoBehaviour:
   m_Name: BlendTree1D
   m_EditorClassIdentifier: 
   guid: 77cdb6722edaac8488217deef1b0ecb7
-  motionInfos:
-  - motion: {fileID: -5796265311833611660}
+  blendParameter: X
+  blendParameterY: 
+  blendType: 0
+  children:
+  - motion: {fileID: -5796265311833611660, guid: fe2f71a9de0454e40b218f374a193fd4, type: 2}
     threshold: 0
     speed: 1
-  - motion: {fileID: 3645775287456616683}
+  - motion: {fileID: -6241749696454973970, guid: fe2f71a9de0454e40b218f374a193fd4, type: 2}
     threshold: 1
     speed: 1
   thresholdArray:
   - 0
   - 1
-  Parameter: X
   controller: {fileID: 11400000}
 --- !u!114 &6438643695196141113
 MonoBehaviour:
@@ -128,3 +130,9 @@ MonoBehaviour:
   guid: 162437ee1e93aae408c8e36a80cfa82b
   m_StateMachine: {fileID: -8150610848943128385}
   m_PlayableAnimatorController: {fileID: 11400000}
+  m_AvatarMask: {fileID: 0}
+  m_BlendingMode: 0
+  m_SyncedLayerIndex: -1
+  m_IKPass: 0
+  m_DefaultWeight: 0
+  m_SyncedLayerAffectsTiming: 0

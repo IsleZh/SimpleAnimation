@@ -97,7 +97,7 @@ namespace Isle.AnimationMachine
             {
                 Debug.Log("TransitionPlayable::m_Transition不为空，所以正在混合两个动画motion");
                 timer += info.deltaTime;
-                currentWeight = (timer / clipLength) / m_Transition.transitionDuration;
+                currentWeight = (timer / clipLength) / m_Transition.duration;
                 
                 if (currentWeight > 1)
                 {

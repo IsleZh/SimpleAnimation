@@ -10,58 +10,58 @@ namespace Isle.AnimationMachine
 {
     [Serializable]
     [CreateAssetMenu(fileName = "StateMachine", menuName = "PlayableAnimation/StateMachine")]
-    public class StateMachine : ScriptableObject
+    public class StateMachine : PlayableAsset
     {
-        [HideInInspector] public string guid;
+        //[HideInInspector] public string guid;
 
         #region PlayableModel
 
         private PlayableGraph m_PlayableGraph;
-        private PlayableAnimator m_PlayableAnimator;
-        private StateLayer m_StateLayer;
+        public StateLayer StateLayer{ get; set; }
 
         public PlayableGraph playableGraph => m_PlayableGraph;
-
-        public PlayableAnimator playableAnimator => m_PlayableAnimator;
-
-        public StateLayer stateLayer => m_StateLayer;
 
         #endregion
 
 
         [SerializeField] private List<State> m_States;
-        [SerializeField] private List<StateMachine> m_StateMachines;
+        [SerializeField] private List<ChildStateMachine> m_StateMachines;
 
-        public List<State> states => m_States;
-        public List<StateMachine> stateMachines => m_StateMachines;
+        public List<State> states
+        {
+            get => m_States;
+            set => m_States = value;
+        }
+
+        public List<ChildStateMachine> stateMachines => m_StateMachines;
         public State defaultState, currentState, nextState;
         public ScriptPlayable<TransitionPlayable> TransitionPlayable;
         public StateTransition currentTransition;
 
         private bool isStarted = false;
 
-        public void Initialize(PlayableAnimator playableAnimator, PlayableGraph graph, StateLayer stateLayer)
+        public void Initialize(StateLayer stateLayer, PlayableAnimatorController controller)
         {
-            m_PlayableAnimator = playableAnimator;
-            m_StateLayer = stateLayer;
-            m_PlayableGraph = graph;
+            StateLayer = stateLayer;
+            m_PlayableGraph = controller.PlayableAnimator.playableGraph;
             TransitionPlayable = ScriptPlayable<TransitionPlayable>.Create(m_PlayableGraph);
-            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
+            //StateLayer.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
 
             foreach (var state in m_States)
             {
                 state.Initialize(this);
             }
-        }
-
-        public void Start()
-        {
             var transitionPlayableBehaviour = TransitionPlayable.GetBehaviour();
 
             currentState = defaultState;
             transitionPlayableBehaviour.Init(currentState.motion, TransitionPlayable, this);
             isStarted = true;
             m_PlayableGraph.Play();
+        }
+
+        public void Start()
+        {
+          
         }
 
         public void Update()
@@ -90,24 +90,24 @@ namespace Isle.AnimationMachine
             nextState = transition.to;
             var transitionBehaviour = TransitionPlayable.GetBehaviour();
             transitionBehaviour.DoSwitch(transition, TransitionPlayable);
-            m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
+            //m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);
         }
 #if UNITY_EDITOR
         /// <summary>
-        /// 创建状态机
+        /// 创建子状态机
         /// </summary>
         /// <returns></returns>
-        [ContextMenu("CreateStateMatchine")]
-        public StateMachine CreateMatchine()
+        [ContextMenu("CreateChildStateMatchine")]
+        public ChildStateMachine CreateMatchine()
         {
-            StateMachine stateMachine = ScriptableObject.CreateInstance(typeof(StateMachine)) as StateMachine;
+            ChildStateMachine stateMachine = ScriptableObject.CreateInstance(typeof(ChildStateMachine)) as ChildStateMachine;
             stateMachine.name = "ChildStateMachine";
             stateMachine.guid = GUID.Generate().ToString();
 
-            Undo.RecordObject(this, "CreateStateMachine");
+            Undo.RecordObject(this, "CreateChildStateMachine");
             if (this.m_StateMachines==null)
             {
-                this.m_StateMachines = new List<StateMachine>();
+                this.m_StateMachines = new List<ChildStateMachine>();
             }
             this.m_StateMachines.Add(stateMachine);
 
@@ -116,7 +116,7 @@ namespace Isle.AnimationMachine
                 AssetDatabase.AddObjectToAsset(stateMachine, this);
             }
 
-            Undo.RegisterCreatedObjectUndo(stateMachine, "CreateStateMachine");
+            Undo.RegisterCreatedObjectUndo(stateMachine, "CreateChildStateMachine");
 
             AssetDatabase.SaveAssets();
             return stateMachine;

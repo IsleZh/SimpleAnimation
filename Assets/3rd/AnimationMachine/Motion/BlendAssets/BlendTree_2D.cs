@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 
 namespace Isle.AnimationMachine
 {
@@ -52,15 +53,15 @@ namespace Isle.AnimationMachine
             /// </summary>
             public MotionNeighborList[] childNeighborListArray;
 
-            public Blend2DType blendType;
+            public Blend2DType blend2DType;
         }
 
         public Blend2DSampleClipInfo[] clips;
 
-        public Blend2DType blendType = Blend2DType.SimpleDirectional;
+        public Blend2DType blend2DType = Blend2DType.SimpleDirectional;
 
         [SerializeField] Blend2dDataConstant constantData;
-
+        [ContextMenu("PrecomputeFreeformData")]
         public void PrecomputeFreeformData()
         {
             constantData = new Blend2dDataConstant();
@@ -75,10 +76,10 @@ namespace Isle.AnimationMachine
                 }
             }
 
-            if (blendType == Blend2DType.FreedomDirectional || blendType == Blend2DType.FreedomCartesian)
+            if (blend2DType == Blend2DType.FreedomDirectional || blend2DType == Blend2DType.FreedomCartesian)
             {
                 // Populate blend 2d precomputed data for type FreeformDirectionnal2D or FreeformCartesian2D
-                if (blendType == Blend2DType.FreedomDirectional)
+                if (blend2DType == Blend2DType.FreedomDirectional)
                 {
                     constantData.childMagnitudeCount = childCount;
                     constantData.childMagnitudeArray = new float[childCount];
@@ -90,7 +91,7 @@ namespace Isle.AnimationMachine
                 constantData.childPairAvgMagInvArray = new float[constantData.childPairAvgMagInvCount];
                 constantData.childPairVectorArray = new Vector2[constantData.childPairVectorCount];
                 constantData.childNeighborListArray = new MotionNeighborList[constantData.childNeighborListCount];
-                PrecomputeFreeform(blendType);
+                PrecomputeFreeform(blend2DType);
             }
         }
 
@@ -210,7 +211,7 @@ namespace Isle.AnimationMachine
 
         public void GetWeights(ref float[] weightArray, float blendValueX, float blendValueY)
         {
-            switch (blendType)
+            switch (blend2DType)
             {
                 case Blend2DType.SimpleDirectional:
                     GetWeightsSimpleDirectional(ref weightArray, blendValueX, blendValueY);

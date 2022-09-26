@@ -1054,7 +1054,7 @@ PrefabInstance:
     - target: {fileID: 416113714, guid: d2d95465831d6594284bbbf7d46e4ee1, type: 3}
       propertyPath: controller
       value: 
-      objectReference: {fileID: 11400000, guid: fe2f71a9de0454e40b218f374a193fd4, type: 2}
+      objectReference: {fileID: 11400000, guid: b554d17ccbd51e94897b0459e0ba2eaf, type: 2}
     - target: {fileID: 4653569991429455166, guid: d2d95465831d6594284bbbf7d46e4ee1, type: 3}
       propertyPath: m_Name
       value: BlendTreePlayer

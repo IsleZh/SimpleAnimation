@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.Animations;
+using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 
@@ -9,25 +10,38 @@ namespace Isle.AnimationMachine
 {
     [CreateAssetMenu(fileName = "PlayableAnimatorController",
         menuName = "PlayableAnimation/Playable Animator Controller")]
-    public class PlayableAnimatorController : ScriptableObject
+    public class PlayableAnimatorController : PlayableAsset
     {
         //private Animator animator;
         //private AnimatorController animatorController;
+        
         [SerializeField] private List<StateLayer> stateLayers;
-        [SerializeField] public List<AnimatorControllerParameter> Parameters;
+        [SerializeField] public List<AnimatorControllerParameter> parameters;
 
         public List<StateLayer> layers
         {
             get => stateLayers;
             set => stateLayers = value;
         }
-        AnimatorState m_Xxx;
+
+        public AnimationLayerMixerPlayable LayerMixerPlayable { get; set; }
+
+        public PlayableAnimator PlayableAnimator { get; set; }
 
         public void Initialize(PlayableAnimator animator,PlayableGraph graph)
         {
-            foreach (var layer in stateLayers)
+            LayerMixerPlayable = AnimationLayerMixerPlayable.Create(graph, layers.Count);
+            //猜的
+            animator.m_AnimationPlayableOutput.SetSourcePlayable(LayerMixerPlayable, 0);
+            PlayableAnimator = animator;
+            for (int i=0;i<stateLayers.Count;i++)
             {
-                layer.Initialize(animator,graph);
+                stateLayers[i].Initialize(this);
+                //TODO 最后的权重应该有一个配置 暂时设为1是蒙的
+                LayerMixerPlayable.ConnectInput(i,stateLayers[i].stateMachine.TransitionPlayable,0,1f);
+                //TODO 实现功能
+                /*LayerMixerPlayable.SetLayerAdditive();
+                LayerMixerPlayable.SetLayerMaskFromAvatarMask();*/
             }
         }
         public void Update()
@@ -156,8 +170,8 @@ namespace Isle.AnimationMachine
             StateLayer layer = ScriptableObject.CreateInstance(typeof(StateLayer)) as StateLayer;
             layer.name = "StateLayer";
             layer.guid = GUID.Generate().ToString();
-
             Undo.RecordObject(this, "CreateStateMachine");
+
             if (this.stateLayers==null)
             {
                 this.stateLayers = new List<StateLayer>();

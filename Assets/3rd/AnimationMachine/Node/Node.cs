@@ -2,9 +2,9 @@
 
 namespace Isle.AnimationMachine
 {
-    public class Node : ScriptableObject
+    public class Node : PlayableAsset
     {
-        [HideInInspector] public string guid;
+        //[HideInInspector] public string guid;
         //[HideInInspector] public Vector2 position;
     }
 }

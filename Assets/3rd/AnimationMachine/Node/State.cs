@@ -24,8 +24,9 @@ namespace Isle.AnimationMachine
         /// </summary>
         [SerializeField] public List<StateTransition> transitions;
         private float timer;
-        
-        public StateMachine stateMachine;
+        [SerializeField]private StateMachine m_StateMachine;
+
+        public StateMachine stateMachine => m_StateMachine;
 
         /// <summary>
         /// 应在状态机某一时刻初始化
@@ -36,8 +37,10 @@ namespace Isle.AnimationMachine
             //TODO 不知道这样初始化正确不正确
             //transitions = new List<StateTransition>();
             
-            this.stateMachine = stateMachine;
-            //#TODO 在这里准备按需加载motion 
+            this.m_StateMachine = stateMachine;
+            //TODO 在这里准备按需加载motion
+            //TODO Stete子元素有很多需要传入m_StateMachine.StateLayer.PlayableAnimatorController的地方 不是很合理
+            motion.PreInit(m_StateMachine.StateLayer.PlayableAnimatorController);
             motion.LoadAsset();
             
             //较小的exitTime在前是为了方便判断
@@ -68,7 +71,7 @@ namespace Isle.AnimationMachine
                 {
                     if (timer>transition.exitTime*transition.from.motion.GetLength())
                     {
-                        if (transition.TryTransition())
+                        if (transition.TryTransition(m_StateMachine.StateLayer.PlayableAnimatorController))
                         {
                             Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.motion.GetLength());
                             stateMachine.Goto(transition);
@@ -122,24 +125,24 @@ namespace Isle.AnimationMachine
 #endif
 #if UNITY_EDITOR
         [ContextMenu("CreateAnimation")]
-        public Animation CreateAnimation()
+        public PlayableAnimationClip CreateAnimation()
         {
-            Animation animation = ScriptableObject.CreateInstance(typeof(Animation)) as Animation;
-            animation.name = "Animation";
-            animation.guid = GUID.Generate().ToString();
+            PlayableAnimationClip playableAnimationClip = ScriptableObject.CreateInstance(typeof(PlayableAnimationClip)) as PlayableAnimationClip;
+            playableAnimationClip.name = "Animation";
+            playableAnimationClip.guid = GUID.Generate().ToString();
 
             Undo.RecordObject(this, "CreateAnimation");
-            this.motion = animation;
+            this.motion = playableAnimationClip;
 
             if (!Application.isPlaying)
             {
-                AssetDatabase.AddObjectToAsset(animation, this);
+                AssetDatabase.AddObjectToAsset(playableAnimationClip, this);
             }
 
-            Undo.RegisterCreatedObjectUndo(animation, "CreateAnimation");
+            Undo.RegisterCreatedObjectUndo(playableAnimationClip, "CreateAnimation");
 
             AssetDatabase.SaveAssets();
-            return animation;
+            return playableAnimationClip;
         }
 #endif
 #if UNITY_EDITOR

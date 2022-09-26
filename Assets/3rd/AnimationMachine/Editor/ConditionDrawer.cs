@@ -13,8 +13,8 @@ public class ConditionDrawer : PropertyDrawer
             //设置属性名宽度
             //EditorGUIUtility.labelWidth = 20;
             //position.height = EditorGUIUtility.singleLineHeight;
-            var nameProperty = property.FindPropertyRelative("Parameter");
-            var typeProperty = property.FindPropertyRelative("ParameterType");
+            var nameProperty = property.FindPropertyRelative("parameter");
+            var typeProperty = property.FindPropertyRelative("parameterType");
             var nameRect = new Rect(position)
             {
                 x = position.x,

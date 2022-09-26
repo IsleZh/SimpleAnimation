@@ -11,7 +11,7 @@ namespace Isle.AnimationMachine
     {
         public Animator animator;
         public PlayableAnimatorController controller;
-        public PlayableGraph m_PlayableGraph;
+        private PlayableGraph m_PlayableGraph;
         public AnimationPlayableOutput m_AnimationPlayableOutput;
 
         #region Test
@@ -22,6 +22,12 @@ namespace Isle.AnimationMachine
 
         #endregion
 
+        public PlayableGraph playableGraph
+        {
+            get => m_PlayableGraph;
+            set => m_PlayableGraph = value;
+        }
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -29,10 +35,10 @@ namespace Isle.AnimationMachine
 
         public void Start()
         {
-            m_PlayableGraph = PlayableGraph.Create();
+            m_PlayableGraph = PlayableGraph.Create(controller.name+"_"+this.gameObject.name);
             m_AnimationPlayableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "TestAnimation", animator);
 
-            controller = Instantiate(controller);
+            //controller = Instantiate(controller);
             controller.Initialize(this,m_PlayableGraph);
         }
 
@@ -41,7 +47,7 @@ namespace Isle.AnimationMachine
         {
             m_PlayableGraph = PlayableGraph.Create();
             m_AnimationPlayableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "TestAnimation", animator);
-            var animation = new Animation();
+            var animation = new PlayableAnimationClip();
             animation.clip = this.clip;
             var state = ScriptableObject.CreateInstance<State>();
             state.motion = animation;
@@ -50,9 +56,9 @@ namespace Isle.AnimationMachine
             state.Initialize(stateMachine);
             var layer = ScriptableObject.CreateInstance<StateLayer>();
             layer.stateMachine = stateMachine;
-            stateMachine.Initialize(this,m_PlayableGraph, layer);
-            stateMachine.Start();
             controller = ScriptableObject.CreateInstance<PlayableAnimatorController>();
+            stateMachine.Initialize(layer,controller);
+            stateMachine.Start();
             controller.layers = new List<StateLayer>();
             controller.layers.Add(layer);
 
@@ -63,10 +69,10 @@ namespace Isle.AnimationMachine
         {
             m_PlayableGraph = PlayableGraph.Create();
             m_AnimationPlayableOutput = AnimationPlayableOutput.Create(m_PlayableGraph, "TestAnimation", animator);
-            var animation = new Animation();
+            var animation = new PlayableAnimationClip();
             animation.clip = this.clip;
             
-            var animation2 = new Animation();
+            var animation2 = new PlayableAnimationClip();
             animation2.clip = this.transitionClip;
             
             var state1 = ScriptableObject.CreateInstance<State>();
@@ -74,13 +80,13 @@ namespace Isle.AnimationMachine
             var state2 = ScriptableObject.CreateInstance<State>();
             state2.motion = animation2;
 
-            var transition = new StateTransition {transitionDuration = 2f, exitTime = 2f, from = state1, to = state2};
+            var transition = new StateTransition {duration = 2f, exitTime = 2f, from = state1, to = state2};
             
             state1.transitions = new List<StateTransition> {transition};
             
             
             //返回 的Transition
-            var transition2 = new StateTransition {transitionDuration = 2f, exitTime = 2f, from = state2, to = state1};
+            var transition2 = new StateTransition {duration = 2f, exitTime = 2f, from = state2, to = state1};
             state2.transitions = new List<StateTransition> {transition2};
             
 
@@ -92,9 +98,10 @@ namespace Isle.AnimationMachine
             
             var layer = ScriptableObject.CreateInstance<StateLayer>();
             layer.stateMachine = stateMachine;
-            stateMachine.Initialize(this,m_PlayableGraph, layer);
-            stateMachine.Start();
             controller = ScriptableObject.CreateInstance<PlayableAnimatorController>();
+            stateMachine.Initialize(layer,controller);
+            stateMachine.Start();
+            
             controller.layers = new List<StateLayer>();
             controller.layers.Add(layer);
         }

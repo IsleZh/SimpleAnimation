@@ -20,6 +20,10 @@ namespace Isle.AnimationMachine
             return Name == other.Name;
         }
 
+        public AnimatorControllerParameter()
+        {
+        }
+
         public AnimatorControllerParameter(string name, AnimationParameterType animationParameterType)
         {
             Name = name;
@@ -30,7 +34,20 @@ namespace Isle.AnimationMachine
 
 public enum AnimationParameterType
 {
-    Int,
-    Float,
-    Bool
+    /// <summary>
+    ///   <para>Float type parameter.</para>
+    /// </summary>
+    Float = 1,
+    /// <summary>
+    ///   <para>Int type parameter.</para>
+    /// </summary>
+    Int = 3,
+    /// <summary>
+    ///   <para>Boolean type parameter.</para>
+    /// </summary>
+    Bool = 4,
+    /// <summary>
+    ///   <para>Trigger type parameter.</para>
+    /// </summary>
+    Trigger = 9,
 }

@@ -6,9 +6,8 @@ using UnityEngine.UIElements;
 namespace Isle.AnimationMachine
 {
     [System.Serializable]
-    public class Motion : ScriptableObject
+    public class Motion : PlayableAsset
     {
-        public string guid;
         protected Playable m_Playable;
         
 
@@ -19,9 +18,15 @@ namespace Isle.AnimationMachine
             return 0;
         }
 
+        public virtual void PreInit(PlayableAnimatorController controller)
+        {
+            
+        }
+
         public virtual void LoadAsset()
         {
         }
+        
 
         /// <summary>
         /// 根据情况传回对应Playable

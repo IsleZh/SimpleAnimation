@@ -18,7 +18,7 @@ MonoBehaviour:
   - {fileID: 6244142894019961044}
   m_StateMachines: []
   defaultState: {fileID: -946307300810146182}
-  currentState: {fileID: 0}
+  currentState: {fileID: -946307300810146182}
   nextState: {fileID: 0}
   currentTransition: {fileID: 0}
 --- !u!114 &-6241749696454973970
@@ -69,7 +69,7 @@ MonoBehaviour:
   motion: {fileID: 5499211086783240041}
   transitions:
   - {fileID: -416266962529036054}
-  stateMachine: {fileID: -8150610848943128385}
+  m_StateMachine: {fileID: 0}
 --- !u!114 &-416266962529036054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,18 +85,12 @@ MonoBehaviour:
   guid: 4dffc8222937fc242b63995b65e416f0
   from: {fileID: -946307300810146182}
   to: {fileID: 6244142894019961044}
-  hasExitTime: 1
   exitTime: 1
-  transitionDuration: 1
-  transitionOffset: 0
-  Conditions:
-  - Parameter: Transition
-    ParameterType: 2
-    IntValue: 0
-    FloatValue: 0
-    BoolValue: 0
+  duration: 0
+  offset: 0
+  conditions: []
   controller: {fileID: 11400000}
-  fixedDuration: 0
+  hasFixedDuration: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +115,7 @@ MonoBehaviour:
     ParameterType: 2
     IntValue: 0
     FloatValue: 0
-    BoolValue: 0
+    BoolValue: 1
 --- !u!114 &1233881148506670956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,18 +131,12 @@ MonoBehaviour:
   guid: 7974d761e85157d4497be8c0ced9b1a0
   from: {fileID: 6244142894019961044}
   to: {fileID: -946307300810146182}
-  hasExitTime: 1
   exitTime: 1
-  transitionDuration: 1
-  transitionOffset: 0
-  Conditions:
-  - Parameter: Transition
-    ParameterType: 2
-    IntValue: 0
-    FloatValue: 0
-    BoolValue: 1
+  duration: 0
+  offset: 0
+  conditions: []
   controller: {fileID: 11400000}
-  fixedDuration: 0
+  hasFixedDuration: 0
 --- !u!114 &3645775287456616683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,17 +166,27 @@ MonoBehaviour:
   m_Name: BlendTree1D
   m_EditorClassIdentifier: 
   guid: 77cdb6722edaac8488217deef1b0ecb7
-  motionInfos:
-  - motion: {fileID: -5796265311833611660}
-    threshold: 0
-    speed: 1
-  - motion: {fileID: 3645775287456616683}
-    threshold: 1
-    speed: 1
+  blendParameter: X
+  blendParameterY: 
+  blendType: 0
+  children:
+  - m_Motion: {fileID: -5796265311833611660}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 0
+    m_CycleOffset: 0
+    m_DirectBlendParameter: 
+    m_Mirror: 0
+  - m_Motion: {fileID: 3645775287456616683}
+    m_Threshold: 0
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 0
+    m_CycleOffset: 0
+    m_DirectBlendParameter: 
+    m_Mirror: 0
   thresholdArray:
   - 0
   - 1
-  Parameter: X
   controller: {fileID: 11400000}
 --- !u!114 &6244142894019961044
 MonoBehaviour:
@@ -206,7 +204,7 @@ MonoBehaviour:
   motion: {fileID: -6241749696454973970}
   transitions:
   - {fileID: 1233881148506670956}
-  stateMachine: {fileID: -8150610848943128385}
+  m_StateMachine: {fileID: 0}
 --- !u!114 &6438643695196141113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +220,9 @@ MonoBehaviour:
   guid: 162437ee1e93aae408c8e36a80cfa82b
   m_StateMachine: {fileID: -8150610848943128385}
   m_PlayableAnimatorController: {fileID: 11400000}
+  m_AvatarMask: {fileID: 0}
+  m_BlendingMode: 0
+  m_SyncedLayerIndex: -1
+  m_IKPass: 0
+  m_DefaultWeight: 0
+  m_SyncedLayerAffectsTiming: 0

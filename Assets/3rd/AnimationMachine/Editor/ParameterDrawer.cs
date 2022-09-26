@@ -41,20 +41,24 @@ public class ParameterDrawer : PropertyDrawer
             EditorGUI.PropertyField(typeRect, typeProperty, GUIContent.none);
 
             //EditorGUI.LabelField(typeRect, typeProperty.enumDisplayNames[typeProperty.enumValueIndex]);
-            if (typeProperty.enumValueIndex == 0)
+            if (typeProperty.enumValueIndex == 1)
             {
                 var intProperty = property.FindPropertyRelative("IntValue");
                 intProperty.intValue = EditorGUI.IntField(valueRect, intProperty.intValue);
             }
-            else if (typeProperty.enumValueIndex == 1)
+            else if (typeProperty.enumValueIndex == 0)
             {
                 var floatProperty = property.FindPropertyRelative("FloatValue");
                 floatProperty.floatValue = EditorGUI.FloatField(valueRect, floatProperty.floatValue);
             }
-            else
+            else if (typeProperty.enumValueIndex == 2)
             {
                 var boolProperty = property.FindPropertyRelative("BoolValue");
                 boolProperty.boolValue = EditorGUI.Toggle(valueRect, boolProperty.boolValue);
+            }
+            else
+            {
+                
             }
         }
     }

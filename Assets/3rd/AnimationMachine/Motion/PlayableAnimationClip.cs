@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 
 namespace Isle.AnimationMachine
 {
-    public class Animation : Motion
+    public class PlayableAnimationClip : Motion
     {
-        public AnimationClip clip;
+        public UnityEngine.AnimationClip clip;
         //private Playable m_Playable;
         public string abPath;
         [SerializeField] private float length;

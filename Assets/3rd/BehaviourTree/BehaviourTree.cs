@@ -50,7 +50,7 @@ namespace Isle.BehaviourTree
             Undo.RecordObject(this, "Behaviour Tree (DeleteNode)");
             nodes.Remove(node);
 
-            //AssetDatabase.RemoveObjectFromAsset(node);
+            AssetDatabase.RemoveObjectFromAsset(node);
             Undo.DestroyObjectImmediate(node);
 
             AssetDatabase.SaveAssets();

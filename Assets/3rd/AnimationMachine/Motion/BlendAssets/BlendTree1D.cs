@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 using TextAsset = UnityEngine.TextCore.Text.TextAsset;
 
 namespace Isle.AnimationMachine
@@ -11,14 +12,12 @@ namespace Isle.AnimationMachine
     [CreateAssetMenu(fileName = "Blend1D Asset", menuName = "CreatePlayableAsset/Blend/AnimGraph_Blend1D", order = 1)]
     public class BlendTree1D : BlendTree
     {
-        [SerializeField] public List<Blend1DMotionInfo> motionInfos;
 
         //[SerializeField] public List<float> thresholdArray;
         [SerializeField]private float[] thresholdArray;
-        public string Parameter;
 
         //TODO 还未进行初始化的controller
-        public PlayableAnimatorController controller;
+        public PlayableAnimatorController m_Controller;
 
         //public ScriptPlayable<AnimationBlendPlayable> AnimationBlendPlayable;
 
@@ -29,12 +28,12 @@ namespace Isle.AnimationMachine
         public override float GetLength()
         {
             var length = 0f;
-            float[] weightArray = new float[motionInfos.Count];
+            float[] weightArray = new float[children.Count];
             //Find可优化
             GetWeights(ref weightArray);
-            for (int i = 0; i < motionInfos.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                length = weightArray[i] * motionInfos[i].motion.GetLength();
+                length = weightArray[i] * children[i].motion.GetLength();
             }
 
             return length;
@@ -43,6 +42,7 @@ namespace Isle.AnimationMachine
         //TODO 按需加载AnimationClip
         public override void LoadAsset()
         {
+            m_Playable = Playable.Null;
         }
 
         public override Playable GetPlayable(PlayableGraph graph)
@@ -62,14 +62,14 @@ namespace Isle.AnimationMachine
         /// <summary>
         /// Initializes a new instance of the <see cref="BlendTree"/> class.
         /// </summary>
-        [ContextMenu("PreInit")]
-        public void PreInit()
+        public override void PreInit(PlayableAnimatorController controller)
         {
+            this.m_Controller = controller;
             //thresholdArray = new List<float>();
-            thresholdArray = new float[motionInfos.Count];
-            for (int i = 0; i < motionInfos.Count; i++)
+            thresholdArray = new float[children.Count];
+            for (int i = 0; i < children.Count; i++)
             {
-                thresholdArray[i] = motionInfos[i].threshold;
+                thresholdArray[i] = children[i].threshold;
             }
         }
 
@@ -79,12 +79,12 @@ namespace Isle.AnimationMachine
         /// <param name="weightArray">返回的权重数组</param>
         public void GetWeights(ref float[] weightArray)
         {
-            var blendValue = controller.Parameters.Find(param => param.Name == Parameter).FloatValue;
-            if (motionInfos.Count < 1)
+            var blendValue = m_Controller.parameters.Find(x => x.Name == blendParameter).FloatValue;
+            if (children.Count < 1)
                 return;
-            blendValue = Mathf.Clamp(blendValue, motionInfos[0].threshold,
-                motionInfos[motionInfos.Count - 1].threshold);
-            for (int i = 0; i < motionInfos.Count; i++)
+            blendValue = Mathf.Clamp(blendValue, children[0].threshold,
+                children[children.Count - 1].threshold);
+            for (int i = 0; i < children.Count; i++)
                 weightArray[i] = WeightForIndex(i, blendValue);
         }
 
@@ -139,30 +139,30 @@ namespace Isle.AnimationMachine
         }
 #if UNITY_EDITOR
         [ContextMenu("CreateAnimation")]
-        public Animation CreateAnimation()
+        public PlayableAnimationClip CreateAnimation()
         {
-            Animation animation = ScriptableObject.CreateInstance(typeof(Animation)) as Animation;
-            animation.name = "Animation";
-            animation.guid = GUID.Generate().ToString();
+            PlayableAnimationClip playableAnimationClip = ScriptableObject.CreateInstance(typeof(PlayableAnimationClip)) as PlayableAnimationClip;
+            playableAnimationClip.name = "Animation";
+            playableAnimationClip.guid = GUID.Generate().ToString();
 
             Undo.RecordObject(this, "CreateAnimation");
-            if (this.motionInfos==null)
+            if (this.children==null)
             {
-                this.motionInfos = new List<Blend1DMotionInfo>();
+                this.children = new List<ChildMotion>();
             }
-            this.motionInfos.Add(new Blend1DMotionInfo() {motion = animation});
+            this.children.Add(new ChildMotion() {motion = playableAnimationClip});
             //var motionInfo = ScriptableObject.CreateInstance(typeof(Blend1DMotionInfo)) as Blend1DMotionInfo;
             //this.motionInfos.Add(motionInfo);
             //motionInfo.motion = animation;
             if (!Application.isPlaying)
             {
-                AssetDatabase.AddObjectToAsset(animation, this);
+                AssetDatabase.AddObjectToAsset(playableAnimationClip, this);
             }
 
-            Undo.RegisterCreatedObjectUndo(animation, "CreateAnimation");
+            Undo.RegisterCreatedObjectUndo(playableAnimationClip, "CreateAnimation");
 
             AssetDatabase.SaveAssets();
-            return animation;
+            return playableAnimationClip;
         }
 #endif
 #if UNITY_EDITOR
@@ -174,11 +174,11 @@ namespace Isle.AnimationMachine
             blendTree.guid = GUID.Generate().ToString();
 
             Undo.RecordObject(this, "CreateBlendTree1D");
-            if (this.motionInfos==null)
+            if (this.children==null)
             {
-                this.motionInfos = new List<Blend1DMotionInfo>();
+                this.children = new List<Isle.AnimationMachine.ChildMotion>();
             }
-            this.motionInfos.Add(new Blend1DMotionInfo() {motion = blendTree});
+            this.children.Add(new ChildMotion() {motion = blendTree});
             //var motionInfo = ScriptableObject.CreateInstance(typeof(Blend1DMotionInfo)) as Blend1DMotionInfo;
             //motionInfo.motion = blendTree;
             //this.motionInfos.Add(motionInfo);
@@ -194,18 +194,5 @@ namespace Isle.AnimationMachine
             return blendTree;
         }
 #endif
-    }
-
-    /// <summary>
-    /// 线性插值采样点信息
-    /// </summary>
-    [Serializable]
-    public class Blend1DMotionInfo
-    {
-        public Motion motion;
-
-        public float threshold;
-
-        public float speed;
     }
 }
