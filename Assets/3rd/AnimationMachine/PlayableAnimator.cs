@@ -80,14 +80,14 @@ namespace Isle.AnimationMachine
             var state2 = ScriptableObject.CreateInstance<State>();
             state2.motion = animation2;
 
-            var transition = new StateTransition {duration = 2f, exitTime = 2f, from = state1, to = state2};
+            var transition = new NodeTransition {duration = 2f, exitTime = 2f, from = state1, to = state2};
             
-            state1.transitions = new List<StateTransition> {transition};
+            state1.transitions = new List<NodeTransition> {transition};
             
             
             //返回 的Transition
-            var transition2 = new StateTransition {duration = 2f, exitTime = 2f, from = state2, to = state1};
-            state2.transitions = new List<StateTransition> {transition2};
+            var transition2 = new NodeTransition {duration = 2f, exitTime = 2f, from = state2, to = state1};
+            state2.transitions = new List<NodeTransition> {transition2};
             
 
             var stateMachine = ScriptableObject.CreateInstance<StateMachine>();
@@ -118,6 +118,20 @@ namespace Isle.AnimationMachine
         private void OnDestroy()
         {
             m_PlayableGraph.Destroy();
+        }
+
+        private void OnEnable()
+        {
+            if (m_PlayableGraph.Equals(playableGraph.IsValid()))
+            {
+                m_PlayableGraph.Play();
+            }
+            
+        }
+
+        private void OnDisable()
+        {
+            m_PlayableGraph.Stop();
         }
     }
 }

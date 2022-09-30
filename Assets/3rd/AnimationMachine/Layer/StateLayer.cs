@@ -93,9 +93,12 @@ namespace Isle.AnimationMachine
 
         public void Initialize(PlayableAnimatorController controller)
         {
+            Debug.Log(stateMachine.currentState);
             this.PlayableAnimatorController = controller;
             stateMachine.Initialize(this,controller);
+            Debug.Log(stateMachine.currentState);
             stateMachine.Start();
+            Debug.Log(stateMachine.currentState);
         }
         
         public void Update()
@@ -103,7 +106,7 @@ namespace Isle.AnimationMachine
             if (m_StateMachine!=null)
             {
                 Debug.Log("m_StateMachine != null");
-                m_StateMachine.Update();
+                m_StateMachine.DoUpdate();
             }
         }
 #if UNITY_EDITOR

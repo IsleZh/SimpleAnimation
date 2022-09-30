@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: TestMainLayer(StateMachine)_State2(state)
   m_EditorClassIdentifier: 
   guid: 
-  motion: {fileID: 11400000, guid: f8780e59081fe6f4a9cdc42dcc15349d, type: 2}
+  motion: {fileID: 11400000, guid: f1147b4888133a24691fbc25215a14a1, type: 2}
   transitions:
-  - {fileID: 7221242839658105059}
+  - {fileID: 6256875057402799768}
   m_StateMachine: {fileID: 0}
---- !u!114 &7221242839658105059
+--- !u!114 &6256875057402799768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,9 +29,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3f3b3cf2474378be38d1d88559246b, type: 3}
   m_Name: transitions0
   m_EditorClassIdentifier: 
-  guid: 278e990bb7286fd4a92b097f8641b347
+  guid: 1ebc00521cb7d4245859c75df655b994
   from: {fileID: 11400000}
-  to: {fileID: 11400000, guid: 4b126d5e6235cea468536de63800a057, type: 2}
+  to: {fileID: 11400000, guid: 972bd615c5fe162499bceaea1ec283f9, type: 2}
   exitTime: 0.92
   duration: 0.25
   offset: 0

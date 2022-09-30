@@ -15,9 +15,7 @@ namespace Isle.AnimationMachine
 
         //[SerializeField] public List<float> thresholdArray;
         [SerializeField]private float[] thresholdArray;
-
-        //TODO 还未进行初始化的controller
-        public PlayableAnimatorController m_Controller;
+        
 
         //public ScriptPlayable<AnimationBlendPlayable> AnimationBlendPlayable;
 
@@ -79,6 +77,7 @@ namespace Isle.AnimationMachine
         /// <param name="weightArray">返回的权重数组</param>
         public void GetWeights(ref float[] weightArray)
         {
+            Debug.Log("m_Controller"+m_Controller);
             var blendValue = m_Controller.parameters.Find(x => x.Name == blendParameter).FloatValue;
             if (children.Count < 1)
                 return;

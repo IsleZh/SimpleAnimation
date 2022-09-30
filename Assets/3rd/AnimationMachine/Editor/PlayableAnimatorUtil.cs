@@ -167,7 +167,6 @@ namespace CostumeAnimator
                 TransParameter(oldCtrl.parameters[i], newParameter);
                 //PACtrl.parameters[i] = newParameter; 
                 PACtrl.parameters.Add(newParameter);
-
             }
 
             // 2.生成动画层Layer
@@ -181,6 +180,15 @@ namespace CostumeAnimator
                 //string layerName = string.Format("{0}_layer{1}", animCtrl.name, i);
                 string layerName = animCtrlLayers[i].name;
                 StateLayer newLayer = CreateAsset<StateLayer>(layerName);
+                if (i == 0)
+                    newLayer.defaultWeight = 1;
+                else
+                    newLayer.defaultWeight = animCtrlLayers[i].defaultWeight;
+                newLayer.avatarMask = animCtrlLayers[i].avatarMask;
+                newLayer.syncedLayerIndex = animCtrlLayers[i].syncedLayerIndex;
+                newLayer.blendingMode = (LayerBlendingMode) animCtrlLayers[i].blendingMode;
+                newLayer.iKPass = animCtrlLayers[i].iKPass;
+                newLayer.syncedLayerAffectsTiming = animCtrlLayers[i].syncedLayerAffectsTiming;
                 //PACtrl.layers[i] = newLayer;
                 PACtrl.layers.Add(newLayer);
 
@@ -248,19 +256,21 @@ namespace CostumeAnimator
         {
             //暂时记录一个原状态与新状态的绑定字典，用于状态转换Transitions的设置。
             Dictionary<AnimatorState, State> stateMap = new Dictionary<AnimatorState, State>();
+            //暂时记录一个原子状态机与新子状态机的绑定字典，用于状态转换Transitions的设置。
+            Dictionary<AnimatorStateMachine, ChildStateMachine> stateMachineMap =
+                new Dictionary<AnimatorStateMachine, ChildStateMachine>();
+
             //收集原状态机的状态
             ChildAnimatorState[] animCtrlStates = originStateMachine.states;
+            //收集原状态机的子状态机
+            ChildAnimatorStateMachine[] animCtrlStateMachines = originStateMachine.stateMachines;
             //收集子状态机包含的所有状态
             UnityEditor.Animations.ChildAnimatorStateMachine[] stateMachines = originStateMachine.stateMachines;
-            stateMachine.states = new List<State>(stateMachines.Length);
-            /*//Motion容器
-            List<Isle.AnimationMachine.Motion> tmpMotions = new List<Isle.AnimationMachine.Motion>();
-            //BlendTree容器
-            List<Isle.AnimationMachine.BlendTree> blendTrees = new List<Isle.AnimationMachine.BlendTree>();*/
             //1.处理所有的state基本数据
+            stateMachine.states = new List<State>(animCtrlStates.Length);
             for (int i = 0; i < animCtrlStates.Length; i++)
             {
-                EditorUtility.DisplayProgressBar("Transform State Group...",
+                EditorUtility.DisplayProgressBar("Transform StateMachine...",
                     string.Format("duel with the {0} state...", i), i / (float) animCtrlStates.Length);
 
                 AnimatorState state = animCtrlStates[i].state;
@@ -280,29 +290,131 @@ namespace CostumeAnimator
             //2.设置状态机的默认状态State
             stateMachine.defaultState = stateMap[originStateMachine.defaultState];
 
-            //3.处理所有state的Transition
-            for (int i = 0; i < animCtrlStates.Length; i++)
+            //3.转换所有子状态机,其中递归执行了1、2、3步骤
+            stateMachine.stateMachines = new List<ChildStateMachine>(animCtrlStateMachines.Length);
+            for (int i = 0; i < animCtrlStateMachines.Length; i++)
+            {
+                EditorUtility.DisplayProgressBar("Transform State machine...",
+                    string.Format("duel with the {0} child state machine...", i),
+                    i / (float) animCtrlStateMachines.Length);
+
+                ChildAnimatorStateMachine childStateMachine = animCtrlStateMachines[i];
+                string stateMachineName = string.Format("{0}_{1}(state)", stateMachine.name,
+                    childStateMachine.stateMachine.name);
+                ChildStateMachine newChildStateMachine = CreateAsset<ChildStateMachine>(stateMachineName);
+                //递归执行了1、2、3步骤
+                TransChildStateMachine(childStateMachine.stateMachine, newChildStateMachine, stateMap, stateMachineMap,
+                    isSync,
+                    overrideLayer);
+                //stateMachine.stateMachines[i] = newChildStateMachine;
+                stateMachine.stateMachines.Add(newChildStateMachine);
+
+
+                //绑定原状态与新状态
+                stateMachineMap.Add(animCtrlStateMachines[i].stateMachine, newChildStateMachine);
+            }
+
+            //4.处理所有state的Transition
+            /*for (int i = 0; i < animCtrlStates.Length; i++)
             {
                 var oldState = animCtrlStates[i].state;
                 var newState = stateMap[animCtrlStates[i].state];
                 newState.transitions =
-                    new List<StateTransition>(animCtrlStates[i].state.transitions.Length);
+                    new List<NodeTransition>(animCtrlStates[i].state.transitions.Length);
                 for (int j = 0; j < oldState.transitions.Length; j++)
                 {
-                    StateTransition newTransition =
-                        CreateAsset<StateTransition, State>("transitions"+j, stateMap[oldState]);
-                    TransTransition(oldState.transitions[j], newTransition, stateMap[oldState], stateMap);
+                    NodeTransition newTransition =
+                        CreateAsset<NodeTransition, State>("transitions" + j, stateMap[oldState]);
+
+                    TransTransition(oldState.transitions[j], newTransition, stateMap[oldState], stateMap,stateMachineMap);
                     newState.transitions.Add(newTransition);
                     //不知道为啥上面的CreateAsset改名和Save没有效果，只能再写一次了。
                     newTransition.name = "transitions" + j;
                     AssetDatabase.SaveAssets();
                     //newState.transitions[j] = newTransition;
                 }
+            }*/
+            foreach (var statePair in stateMap)
+            {
+                statePair.Value.transitions =
+                    new List<NodeTransition>();
+                for (int j = 0; j < statePair.Key.transitions.Length; j++)
+                {
+                    NodeTransition newTransition =
+                        CreateAsset<NodeTransition, State>("transitions" + j, stateMap[statePair.Key]);
+
+                    TransTransition(statePair.Key.transitions[j], newTransition, stateMap[statePair.Key], stateMap,stateMachineMap);
+                    statePair.Value.transitions.Add(newTransition);
+                    //不知道为啥上面的CreateAsset改名和Save没有效果，只能再写一次了。
+                    newTransition.name = "transitions" + j;
+                    AssetDatabase.SaveAssets();
+                    //newState.transitions[j] = newTransition;
+                }
             }
+
             AssetDatabase.SaveAssets();
             /*assetStateGroup.groupName = groupName;
             assetStateGroup.motions = tmpMotions.ToArray();
             assetStateGroup.blendTrees = blendTrees.ToArray();*/
+        }
+
+        private void TransChildStateMachine(AnimatorStateMachine originStateMachine,
+            ChildStateMachine stateMachine, Dictionary<AnimatorState, State> stateMap,
+            Dictionary<AnimatorStateMachine, ChildStateMachine> stateMachineMap,
+            bool isSync, AnimatorControllerLayer overrideLayer)
+        {
+            //收集原状态机的状态
+            ChildAnimatorState[] animCtrlStates = originStateMachine.states;
+            //收集原状态机的子状态机
+            ChildAnimatorStateMachine[] animCtrlStateMachines = originStateMachine.stateMachines;
+            //收集子状态机包含的所有状态
+            UnityEditor.Animations.ChildAnimatorStateMachine[] stateMachines = originStateMachine.stateMachines;
+            //1.处理所有的state基本数据
+            stateMachine.states = new List<State>(animCtrlStates.Length);
+            for (int i = 0; i < animCtrlStates.Length; i++)
+            {
+                EditorUtility.DisplayProgressBar("Transform StateMachine...",
+                    string.Format("duel with the {0} state...", i), i / (float) animCtrlStates.Length);
+
+                AnimatorState state = animCtrlStates[i].state;
+                string stateName = string.Format("{0}_{1}(state)", stateMachine.name, state.name);
+                State newState = CreateAsset<State>(stateName);
+                Motion motion =
+                    isSync ? overrideLayer.GetOverrideMotion(state) : state.motion; // 如果是同步层，取OverrideMotion
+                TransState(state, newState, motion);
+                //stateMachine.states[i] = newState;
+                stateMachine.states.Add(newState);
+
+
+                //绑定原状态与新状态
+                stateMap.Add(animCtrlStates[i].state, newState);
+            }
+
+            //2.设置状态机的默认状态State
+            stateMachine.defaultState = stateMap[originStateMachine.defaultState];
+
+            //3.转换所有子状态机,其中递归执行了1、2、3步骤
+            stateMachine.stateMachines = new List<ChildStateMachine>(animCtrlStateMachines.Length);
+            for (int i = 0; i < animCtrlStateMachines.Length; i++)
+            {
+                EditorUtility.DisplayProgressBar("Transform State machine...",
+                    string.Format("duel with the {0} child state machine...", i),
+                    i / (float) animCtrlStateMachines.Length);
+
+                ChildAnimatorStateMachine childStateMachine = animCtrlStateMachines[i];
+                string stateMachineName = string.Format("{0}_{1}(state)", stateMachine.name,
+                    childStateMachine.stateMachine.name);
+                ChildStateMachine newChildStateMachine = CreateAsset<ChildStateMachine>(stateMachineName);
+                TransChildStateMachine(childStateMachine.stateMachine, newChildStateMachine, stateMap, stateMachineMap,
+                    isSync,
+                    overrideLayer);
+                //stateMachine.stateMachines[i] = newChildStateMachine;
+                stateMachine.stateMachines.Add(newChildStateMachine);
+
+
+                //绑定原状态与新状态
+                stateMachineMap.Add(animCtrlStateMachines[i].stateMachine, newChildStateMachine);
+            }
         }
 
         /// <summary>
@@ -317,8 +429,8 @@ namespace CostumeAnimator
             {
                 BlendTree originBlendTree = motion as BlendTree;
                 //string blendTreeName = string.Format("{0}_blendTree_{1}", stateMachine.name, state.name);
-                
-                TransMotion(originBlendTree, out newMotion,state.name);
+
+                TransMotion(originBlendTree, out newMotion, state.name);
                 //tmpMotions.Add(blendTree);
             }
             else if (motion is AnimationClip)
@@ -334,12 +446,19 @@ namespace CostumeAnimator
             state.motion = newMotion;
         }
 
-        private void TransTransition(AnimatorStateTransition transition, StateTransition newTransition, State state,
-            Dictionary<AnimatorState, State> stateMap)
+        private void TransTransition(AnimatorStateTransition transition, NodeTransition newTransition, State state,
+            Dictionary<AnimatorState, State> stateMap,Dictionary<AnimatorStateMachine, ChildStateMachine> stateMachineMap)
         {
             newTransition.name = transition.name;
             newTransition.from = state;
-            newTransition.to = stateMap[transition.destinationState];
+            if (transition.destinationState != null)
+            {
+                newTransition.to = stateMap[transition.destinationState];
+            }else if (transition.destinationStateMachine != null)
+            {
+                newTransition.to = stateMachineMap[transition.destinationStateMachine];
+            }
+           
             newTransition.offset = transition.offset;
             newTransition.duration = transition.duration;
             newTransition.exitTime = transition.exitTime;
@@ -348,7 +467,8 @@ namespace CostumeAnimator
             newTransition.conditions = new TransitionCondition[transition.conditions.Length];
             for (int i = 0; i < transition.conditions.Length; i++)
             {
-                newTransition.conditions[i] = new TransitionCondition();;
+                newTransition.conditions[i] = new TransitionCondition();
+                ;
                 TransCondition(transition.conditions[i], newTransition.conditions[i]);
             }
         }
@@ -365,6 +485,7 @@ namespace CostumeAnimator
             {
                 Debug.Log("newTransitionCondition == null");
             }
+
             newTransitionCondition.parameter = transitionCondition.parameter;
             //暂时试用的转换参数
             newTransitionCondition.FloatValue = transitionCondition.threshold;
@@ -404,15 +525,14 @@ namespace CostumeAnimator
         private void TransMotion(UnityEngine.Motion originMotion, out Isle.AnimationMachine.Motion newMotion,
             string stateName)
         {
-            
             if (originMotion is AnimationClip clip)
             {
                 newMotion = CreateAsset<Isle.AnimationMachine.PlayableAnimationClip>(originMotion.name);
-                TransAnimationClip(clip, (Isle.AnimationMachine.PlayableAnimationClip)newMotion, originMotion.name);
+                TransAnimationClip(clip, (Isle.AnimationMachine.PlayableAnimationClip) newMotion, originMotion.name);
             }
             else if (originMotion is BlendTree tree)
             {
-                TransBlendTree(tree,out var newTree, originMotion.name);
+                TransBlendTree(tree, out var newTree, originMotion.name);
                 newMotion = newTree;
             }
             else
@@ -420,7 +540,6 @@ namespace CostumeAnimator
                 newMotion = null;
                 Debug.LogError("转换失败，尝试转换不被支持的Motion类型");
             }
-            
         }
 
         /// <summary>

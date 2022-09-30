@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Isle.AnimationMachine
 {
-    public class StateTransition : PlayableAsset
+    public class NodeTransition : PlayableAsset
     {
-        public State from, to;
+        public Node from, to;
         /// <summary>
         ///   <para>When active the transition will have an exit time condition.</para>
         /// </summary>

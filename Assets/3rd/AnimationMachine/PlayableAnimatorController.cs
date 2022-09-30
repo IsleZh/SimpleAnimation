@@ -38,7 +38,7 @@ namespace Isle.AnimationMachine
             {
                 stateLayers[i].Initialize(this);
                 //TODO 最后的权重应该有一个配置 暂时设为1是蒙的
-                LayerMixerPlayable.ConnectInput(i,stateLayers[i].stateMachine.TransitionPlayable,0,1f);
+                LayerMixerPlayable.ConnectInput(i,stateLayers[i].stateMachine.TransitionPlayable,0,stateLayers[i].defaultWeight);
                 //TODO 实现功能
                 /*LayerMixerPlayable.SetLayerAdditive();
                 LayerMixerPlayable.SetLayerMaskFromAvatarMask();*/

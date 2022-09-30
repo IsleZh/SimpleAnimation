@@ -22,7 +22,7 @@ namespace Isle.AnimationMachine
         /// <summary>
         ///   <para>The transitions that are going out of the state.</para>
         /// </summary>
-        [SerializeField] public List<StateTransition> transitions;
+        [SerializeField] public List<NodeTransition> transitions;
         private float timer;
         [SerializeField]private StateMachine m_StateMachine;
 
@@ -69,11 +69,11 @@ namespace Isle.AnimationMachine
             {
                 foreach (var transition in transitions)
                 {
-                    if (timer>transition.exitTime*transition.from.motion.GetLength())
+                    if (timer>transition.exitTime*transition.from.GetState().motion.GetLength())
                     {
                         if (transition.TryTransition(m_StateMachine.StateLayer.PlayableAnimatorController))
                         {
-                            Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.motion.GetLength());
+                            Debug.Log("切换动画判断通过，Timer:"+timer +" Duration:"+transition.exitTime*transition.from.GetState().motion.GetLength());
                             stateMachine.Goto(transition);
                             return true; 
                         }
@@ -93,34 +93,39 @@ namespace Isle.AnimationMachine
         {
             
         }
+
+        public override State GetState()
+        {
+            return this;
+        }
 #if UNITY_EDITOR
         /// <summary>
         /// 创建转换
         /// </summary>
         /// <returns></returns>
         [ContextMenu("CreateTransition")]
-        public StateTransition CreateTransition()
+        public NodeTransition CreateTransition()
         {
-            StateTransition stateTransition = ScriptableObject.CreateInstance(typeof(StateTransition)) as StateTransition;
-            stateTransition.name = "StateTransition";
-            stateTransition.guid = GUID.Generate().ToString();
+            NodeTransition nodeTransition = ScriptableObject.CreateInstance(typeof(NodeTransition)) as NodeTransition;
+            nodeTransition.name = "StateTransition";
+            nodeTransition.guid = GUID.Generate().ToString();
 
             Undo.RecordObject(this, "CreateStateMachine");
             if (this.transitions==null)
             {
-                this.transitions = new List<StateTransition>();
+                this.transitions = new List<NodeTransition>();
             }
-            this.transitions.Add(stateTransition);
+            this.transitions.Add(nodeTransition);
 
             if (!Application.isPlaying)
             {
-                AssetDatabase.AddObjectToAsset(stateTransition, this);
+                AssetDatabase.AddObjectToAsset(nodeTransition, this);
             }
 
-            Undo.RegisterCreatedObjectUndo(stateTransition, "CreateTransition");
+            Undo.RegisterCreatedObjectUndo(nodeTransition, "CreateTransition");
 
             AssetDatabase.SaveAssets();
-            return stateTransition;
+            return nodeTransition;
         }
 #endif
 #if UNITY_EDITOR

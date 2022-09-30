@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Blend Tree
   m_EditorClassIdentifier: 
   guid: 
+  m_Controller: {fileID: 0}
   blendParameter: 
   blendParameterY: 
   blendType: 0
   children: []
   thresholdArray: []
-  m_Controller: {fileID: 0}

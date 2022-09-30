@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175220e3d033494d9252005b354d58fb, type: 3}
+  m_Name: TestMainLayer(StateMachine)_Blend Tree1(state)
+  m_EditorClassIdentifier: 
+  guid: 
+  motion: {fileID: 11400000, guid: 7d447afe8db9f624487d7a44b5712c15, type: 2}
+  transitions:
+  - {fileID: 1629645157051739739}
+  m_StateMachine: {fileID: 0}
+--- !u!114 &1629645157051739739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c3f3b3cf2474378be38d1d88559246b, type: 3}
+  m_Name: transitions0
+  m_EditorClassIdentifier: 
+  guid: 655e0234d7c0e4443b2a400c1b1bfe07
+  from: {fileID: 11400000}
+  to: {fileID: 11400000, guid: 09902aa9fa25ec3449c672eeb8a73760, type: 2}
+  exitTime: 0.68679863
+  duration: 0.5638979
+  offset: 0
+  conditions:
+  - parameter: Transition
+    parameterType: 0
+    IntValue: 0
+    FloatValue: 0
+    BoolValue: 0
+  controller: {fileID: 0}
+  hasFixedDuration: 1

@@ -28,7 +28,7 @@ namespace Isle.AnimationMachine
         {
             base.LoadAsset();
         }
-
+        public PlayableAnimatorController m_Controller;
         /// <summary>
         ///   <para>Parameter that is used to compute the blending weight of the childs in 1D blend trees or on the X axis of a 2D blend tree.</para>
         /// </summary>

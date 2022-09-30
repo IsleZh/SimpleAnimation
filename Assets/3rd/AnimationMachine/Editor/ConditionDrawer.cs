@@ -18,24 +18,24 @@ public class ConditionDrawer : PropertyDrawer
             var nameRect = new Rect(position)
             {
                 x = position.x,
-                y = position.y,// + (40 - EditorGUIUtility.singleLineHeight) / 2,
-                width = 50+ nameProperty.stringValue.Length *10,
+                y = position.y, // + (40 - EditorGUIUtility.singleLineHeight) / 2,
+                width = 50 + nameProperty.stringValue.Length * 10,
                 //100
-                height = position.height,//EditorGUIUtility.singleLineHeight
+                height = position.height, //EditorGUIUtility.singleLineHeight
             };
             var typeRect = new Rect(nameRect)
             {
-                x = nameRect.x +nameRect.width +5,
+                x = nameRect.x + nameRect.width + 5,
                 width = 50,
-                height = position.height,//EditorGUIUtility.singleLineHeight
+                height = position.height, //EditorGUIUtility.singleLineHeight
             };
             var valueRect = new Rect(typeRect)
             {
                 x = typeRect.x + typeRect.width + 5,
                 width = 50,
-                height = position.height,//EditorGUIUtility.singleLineHeight
+                height = position.height, //EditorGUIUtility.singleLineHeight
             };
-            
+
 
             nameProperty.stringValue = EditorGUI.TextField(nameRect, nameProperty.stringValue);
             EditorGUI.PropertyField(typeRect, typeProperty, GUIContent.none);
@@ -43,21 +43,19 @@ public class ConditionDrawer : PropertyDrawer
             //EditorGUI.LabelField(typeRect, typeProperty.enumDisplayNames[typeProperty.enumValueIndex]);
             if (typeProperty.enumValueIndex == 0)
             {
+                var floatProperty = property.FindPropertyRelative("FloatValue");
+                floatProperty.floatValue = EditorGUI.FloatField(valueRect, floatProperty.floatValue);
+            }else if (typeProperty.enumValueIndex == 1)
+            {
                 var intProperty = property.FindPropertyRelative("IntValue");
                 intProperty.intValue = EditorGUI.IntField(valueRect, intProperty.intValue);
             }
-            else if (typeProperty.enumValueIndex == 1)
-            {
-                var floatProperty = property.FindPropertyRelative("FloatValue");
-                floatProperty.floatValue = EditorGUI.FloatField(valueRect, floatProperty.floatValue);
-            }
-            else
+            else if (typeProperty.enumValueIndex == 2)
             {
                 var boolProperty = property.FindPropertyRelative("BoolValue");
                 boolProperty.boolValue = EditorGUI.Toggle(valueRect, boolProperty.boolValue);
             }
+            else{}
         }
     }
-
-    
 }

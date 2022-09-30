@@ -56,8 +56,6 @@ namespace Isle.AnimationMachine
             public Blend2DType blend2DType;
         }
 
-        public Blend2DSampleClipInfo[] clips;
-
         public Blend2DType blend2DType = Blend2DType.SimpleDirectional;
 
         [SerializeField] Blend2dDataConstant constantData;
@@ -65,14 +63,14 @@ namespace Isle.AnimationMachine
         public void PrecomputeFreeformData()
         {
             constantData = new Blend2dDataConstant();
-            var childCount = clips.Length;
+            var childCount = children.Count;
             constantData.childCount = childCount;
             if (childCount > 0)
             {
                 constantData.childPositionArray = new Vector2[childCount];
                 for (int i = 0; i < childCount; i++)
                 {
-                    constantData.childPositionArray[i] = clips[i].dirPos;
+                    constantData.childPositionArray[i] = children[i].position;
                 }
             }
 
@@ -208,9 +206,30 @@ namespace Isle.AnimationMachine
         
 
         int[] copyArray = new int[0];
-
-        public void GetWeights(ref float[] weightArray, float blendValueX, float blendValueY)
+        
+        
+        /// <summary>
+        /// 获得BlendTree_1D的当前长度，因为混合了多个motion所以需要通过Motion和Weights以及当前混合参数计算出来。
+        /// </summary>
+        /// <returns></returns>
+        public override float GetLength()
         {
+            var length = 0f;
+            float[] weightArray = new float[children.Count];
+            //Find可优化
+            GetWeights(ref weightArray);
+            for (int i = 0; i < children.Count; i++)
+            {
+                length = weightArray[i] * children[i].motion.GetLength();
+            }
+
+            return length;
+        }
+        public void GetWeights(ref float[] weightArray)
+        {
+            float blendValueX = m_Controller.parameters.Find(x => x.Name == blendParameter).FloatValue; 
+            float blendValueY=m_Controller.parameters.Find(x => x.Name == blendParameterY).FloatValue;
+            
             switch (blend2DType)
             {
                 case Blend2DType.SimpleDirectional:
@@ -572,14 +591,6 @@ namespace Isle.AnimationMachine
 
         #endregion
 
-    }
-
-    [Serializable]
-    public class Blend2DSampleClipInfo
-    {
-        public AnimationClip clip;
-
-        public Vector2 dirPos;
     }
 
     public enum Blend2DType

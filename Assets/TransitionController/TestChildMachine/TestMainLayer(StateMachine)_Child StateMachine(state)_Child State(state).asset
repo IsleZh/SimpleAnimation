@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-514259038611534079
+--- !u!114 &-3074167974644389737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3f3b3cf2474378be38d1d88559246b, type: 3}
   m_Name: transitions0
   m_EditorClassIdentifier: 
-  guid: 0e8dd98448789e54cb66577fc895eb6f
+  guid: 5699a15ff3f4d6948895b375b10523ca
   from: {fileID: 11400000}
-  to: {fileID: 11400000, guid: 09902aa9fa25ec3449c672eeb8a73760, type: 2}
+  to: {fileID: 11400000, guid: 972bd615c5fe162499bceaea1ec283f9, type: 2}
   exitTime: 0.75
   duration: 0.25
   offset: 0
   conditions:
-  - parameter: Transition
+  - parameter: Transition2
     parameterType: 0
     IntValue: 0
     FloatValue: 0
@@ -36,10 +36,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 175220e3d033494d9252005b354d58fb, type: 3}
-  m_Name: TestMainLayer(StateMachine)_Blend Tree1(state)
+  m_Name: TestMainLayer(StateMachine)_Child StateMachine(state)_Child State(state)
   m_EditorClassIdentifier: 
   guid: 
-  motion: {fileID: 11400000, guid: 7d447afe8db9f624487d7a44b5712c15, type: 2}
+  motion: {fileID: 11400000, guid: 1811ef0b0e2961a4e87408daab882354, type: 2}
   transitions:
-  - {fileID: -514259038611534079}
+  - {fileID: -3074167974644389737}
   m_StateMachine: {fileID: 0}

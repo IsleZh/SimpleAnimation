@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 043e04f9427f4c7cb25cf369184436cf, type: 3}
-  m_Name: TestTransController 1
+  m_Script: {fileID: 11500000, guid: 1bb4524e6871265479b4c857a80a8467, type: 3}
+  m_Name: Blend Tree
   m_EditorClassIdentifier: 
   guid: 
-  stateLayers: []
-  parameters: []
+  m_Controller: {fileID: 0}
+  blendParameter: 
+  blendParameterY: 
+  blendType: 0
+  children: []
+  thresholdArray: []

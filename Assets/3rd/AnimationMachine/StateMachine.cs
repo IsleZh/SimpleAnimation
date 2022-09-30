@@ -33,10 +33,15 @@ namespace Isle.AnimationMachine
             set => m_States = value;
         }
 
-        public List<ChildStateMachine> stateMachines => m_StateMachines;
+        public List<ChildStateMachine> stateMachines
+        {
+            get => m_StateMachines;
+            set => m_StateMachines = value;
+        }
+
         public State defaultState, currentState, nextState;
         public ScriptPlayable<TransitionPlayable> TransitionPlayable;
-        public StateTransition currentTransition;
+        public NodeTransition currentTransition;
 
         private bool isStarted = false;
 
@@ -51,23 +56,34 @@ namespace Isle.AnimationMachine
             {
                 state.Initialize(this);
             }
-            var transitionPlayableBehaviour = TransitionPlayable.GetBehaviour();
 
+            foreach (var stateMachine in stateMachines)
+            {
+                stateMachine.Initialize(this);
+            }
+        }
+        public void Start()
+        {
+            var transitionPlayableBehaviour = TransitionPlayable.GetBehaviour();
             currentState = defaultState;
             transitionPlayableBehaviour.Init(currentState.motion, TransitionPlayable, this);
             isStarted = true;
             m_PlayableGraph.Play();
         }
 
-        public void Start()
+        public void DoUpdate()
         {
-          
-        }
-
-        public void Update()
-        {
+            Debug.Log("defaultState="+defaultState);
+            Debug.Log("currentState="+currentState);
             //有可能要同时处理两个Update
-            currentState.DoUpdate(Time.deltaTime);
+            if (currentState!= null)
+            {
+                currentState.DoUpdate(Time.deltaTime);
+            }
+            else
+            {
+                Debug.AssertFormat(true,"{0}.currentState为空",name);
+            }
             //nextState.DoUpdate(Time.deltaTime);
         }
 
@@ -84,10 +100,10 @@ namespace Isle.AnimationMachine
             currentTransition = null;
         }
 
-        public void Goto(StateTransition transition)
+        public void Goto(NodeTransition transition)
         {
             currentTransition = transition;
-            nextState = transition.to;
+            nextState = transition.to.GetState();
             var transitionBehaviour = TransitionPlayable.GetBehaviour();
             transitionBehaviour.DoSwitch(transition, TransitionPlayable);
             //m_PlayableAnimator.m_AnimationPlayableOutput.SetSourcePlayable(TransitionPlayable, 0);

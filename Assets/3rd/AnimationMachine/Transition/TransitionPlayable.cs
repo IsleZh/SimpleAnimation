@@ -7,7 +7,7 @@ namespace Isle.AnimationMachine
 {
     public class TransitionPlayable : PlayableBehaviour
     {
-        private StateTransition m_Transition;
+        private NodeTransition m_Transition;
         private StateMachine m_StateMachine;
         private Playable mixer;
         private float currentWeight;
@@ -51,7 +51,7 @@ namespace Isle.AnimationMachine
         /// <param name="transition"></param>
         /// <param name="owner"></param>
         /// <param name="graph"></param>
-        public void DoSwitch(StateTransition transition, Playable owner)
+        public void DoSwitch(NodeTransition transition, Playable owner)
         {
             //强行防止反复switch，以后要改逻辑
             if (m_Transition!=null)
@@ -70,7 +70,7 @@ namespace Isle.AnimationMachine
             //graph.Connect(transition.to.motion.GetPlayable(graph), 0, mixer, 1);
             //Debug.Log("IsValid:"+transition.to.motion.GetPlayable(graph).GetOutput(0).IsValid());
             //最后把要转换的动画连接到端口1上
-            mixer.ConnectInput(1,transition.to.motion.GetPlayable(owner.GetGraph()), 0);
+            mixer.ConnectInput(1,transition.to.GetState().motion.GetPlayable(owner.GetGraph()), 0);
            
             //mixer.CanChangeInputs();
             //graph.Connect(transition.from.motion.GetPlayable(graph), 0, mixer, 0);
@@ -83,7 +83,7 @@ namespace Isle.AnimationMachine
 
             mixer.SetInputWeight(1, currentWeight);
 
-            clipLength = transition.from.motion.GetLength();
+            clipLength = transition.from.GetState().motion.GetLength();
             //TODO 测试转换BUG
             //EditorApplication.isPaused = true;
         }
